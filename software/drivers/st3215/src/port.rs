@@ -744,10 +744,16 @@ impl St3215Port {
             let mut all_ok = true;
             for motor_id in 1..=MAX_MOTORS_CNT {
                 match Self::reset_calibration(port, motor_id).await {
-                    Ok(verified) => { all_ok &= verified; }
+                    Ok(verified) => {
+                        if motor_id <= 6 {
+                            all_ok &= verified;
+                        }
+                    }
                     Err(e) => {
                         warn!("Failed to reset calibration for motor {}: {}", motor_id, e);
-                        all_ok = false;
+                        if motor_id <= 6 {
+                            all_ok = false;
+                        }
                     }
                 }
             }

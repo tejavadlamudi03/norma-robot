@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { st3215 } from '../api/proto';
+import { st3215, motors_mirroring } from '../api/proto';
 import BusWebGLRenderer from '../st3215/BusWebGLRenderer';
 import MotorDataTable from '../st3215/MotorDataTable';
 import webSocketManager from '../api/websocket';
@@ -78,15 +78,26 @@ const St3215BusCalibrationPage: React.FC = () => {
   }, 255) ?? 255;
   const isLowVoltage = minVoltage < 70; // Less than 7.0V
 
+  const resetCalibration = async (busSerial: string) => {
+    await webSocketManager.commands.sendMirroringCommand({
+      type: motors_mirroring.CommandType.CT_STOP_MIRROR,
+      source: {
+        type: motors_mirroring.BusType.MBT_ST3215,
+        uniqueId: busSerial,
+      },
+    });
+    await webSocketManager.commands.sendSt3215Command({
+      targetBusSerial: busSerial,
+      resetCalibration: { reset: true },
+    });
+  };
+
   // Send reset command when the calibration page opens
   useEffect(() => {
-    if (!selectedBus?.bus?.serialNumber) return;
-    webSocketManager.commands.sendSt3215Command({
-      targetBusSerial: selectedBus.bus.serialNumber,
-      resetCalibration: {
-        reset: true
-      }
-    });
+    const busSerial = selectedBus?.bus?.serialNumber;
+    if (!busSerial) return;
+    resetCalibration(busSerial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBus?.bus?.serialNumber]);
 
   useEffect(() => {
@@ -99,12 +110,7 @@ const St3215BusCalibrationPage: React.FC = () => {
   const handleReset = async () => {
     if (!selectedBus?.bus?.serialNumber) return;
     setResetting(true);
-    await webSocketManager.commands.sendSt3215Command({
-      targetBusSerial: selectedBus.bus.serialNumber,
-      resetCalibration: {
-        reset: true
-      }
-    });
+    await resetCalibration(selectedBus.bus.serialNumber);
 
     // TODO(ab): normal command result wait from inference state
     setTimeout(() => {
