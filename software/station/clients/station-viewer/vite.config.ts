@@ -44,7 +44,7 @@ function resolveWorkspaceVersion(): string {
 
 function resolveGitHash(): string {
   try {
-    return execSync('git rev-parse --short=10 HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+    return execSync('git rev-parse --short=7 HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
       .toString()
       .trim();
   } catch {

@@ -33,8 +33,8 @@ function Navigation() {
 
   return (
     <div className="relative z-40 bg-surface-primary border-b-2 border-border-default">
-      <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto scrollbar-thin">
-        <Link to="/" className="group shrink-0">
+      <div className="px-4 py-2 flex items-center gap-4">
+        <Link to="/" className="group">
           <img
             src="/logo.svg"
             alt="Station View"
@@ -42,7 +42,7 @@ function Navigation() {
             className="h-8 logo-first-load logo-invert opacity-80 transition-opacity duration-200 group-hover:opacity-100"
           />
         </Link>
-        <nav className="flex gap-4 shrink-0">
+        <nav className="flex gap-4">
           <Link
             to="/"
             className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
@@ -73,16 +73,16 @@ function Navigation() {
           title={`Theme: ${THEME_LABELS[themePreference]} -> ${THEME_LABELS[nextThemePreference]}`}
         >
           <ThemeIcon size={14} className="text-text-muted" />
-          <span className="rounded bg-surface-primary px-2 py-0.5 text-text-primary shadow-sm">
+          <span className="hidden sm:inline rounded bg-surface-primary px-2 py-0.5 text-text-primary shadow-sm">
             {THEME_LABELS[themePreference]}
           </span>
-          <span className="pointer-events-none invisible absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 whitespace-nowrap rounded bg-surface-primary px-2 py-1 text-[11px] font-medium text-text-primary opacity-0 shadow-lg ring-1 ring-border-default transition-all duration-150 group-hover:visible group-hover:opacity-100">
+          <span className="pointer-events-none invisible absolute left-1/2 top-full z-50 mt-2 hidden -translate-x-1/2 whitespace-nowrap rounded bg-surface-primary px-2 py-1 text-[11px] font-medium text-text-primary opacity-0 shadow-lg ring-1 ring-border-default transition-all duration-150 group-hover:visible group-hover:opacity-100 sm:block">
             {`Switch to ${THEME_LABELS[nextThemePreference]}`}
           </span>
         </button>
 
         <span
-          className="text-[11px] font-mono text-text-muted shrink-0"
+          className="hidden text-[11px] font-mono text-text-muted sm:inline"
           title="Station build version and commit hash"
         >
           {`⎇ ${__STATION_VERSION__}`}
