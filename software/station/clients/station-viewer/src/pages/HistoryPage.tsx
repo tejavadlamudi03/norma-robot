@@ -55,28 +55,28 @@ function HistoryPage() {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="p-4 flex-shrink-0">
-        <h1 className="text-xl font-bold text-white mb-2">History Timeline</h1>
+        <h1 className="text-xl font-bold text-text-primary mb-2">History Timeline</h1>
 
         {timelineState.isLoading ? (
           <div className="text-center p-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading frame range from NormFS...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-info mx-auto mb-4"></div>
+            <p className="text-text-label">Loading frame range from NormFS...</p>
           </div>
         ) : timelineState.error ? (
           <div className="text-center p-8">
-            <div className="text-red-400 text-xl mb-4">!</div>
-            <p className="text-red-400 mb-4">{timelineState.error}</p>
+            <div className="text-accent-critical text-xl mb-4">!</div>
+            <p className="text-accent-critical mb-4">{timelineState.error}</p>
           </div>
         ) : (
           <div className="mb-3">
-            <p className="text-gray-400 mb-2">
+            <p className="text-text-label mb-2">
               Navigate through inference frames from NormFS.
               Click to select frames, drag to zoom.
             </p>
-            <div className="flex items-center gap-4 text-xs text-gray-500">
+            <div className="flex items-center gap-4 text-xs text-text-muted">
               <span>Range: <span className="font-mono">{timelineState.range.min.toLocaleString()} - {timelineState.range.max.toLocaleString()}</span></span>
-              <span className="text-gray-600">|</span>
-              <span>Keys: <kbd className="px-1 bg-gray-700 rounded">G</kbd> goto, <kbd className="px-1 bg-gray-700 rounded">←</kbd>/<kbd className="px-1 bg-gray-700 rounded">→</kbd> nav, <kbd className="px-1 bg-gray-700 rounded">Home</kbd>/<kbd className="px-1 bg-gray-700 rounded">End</kbd> jump, <kbd className="px-1 bg-gray-700 rounded">Esc</kbd> reset zoom</span>
+              <span className="text-text-dim">|</span>
+              <span>Keys: <kbd className="px-1 bg-surface-tertiary rounded">G</kbd> goto, <kbd className="px-1 bg-surface-tertiary rounded">←</kbd>/<kbd className="px-1 bg-surface-tertiary rounded">→</kbd> nav, <kbd className="px-1 bg-surface-tertiary rounded">Home</kbd>/<kbd className="px-1 bg-surface-tertiary rounded">End</kbd> jump, <kbd className="px-1 bg-surface-tertiary rounded">Esc</kbd> reset zoom</span>
             </div>
           </div>
         )}
@@ -93,18 +93,18 @@ function HistoryPage() {
         {!timelineState.isLoading && !timelineState.error && (
           <div className="overflow-y-auto flex-1 min-h-0">
             <>
-            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-              <h3 className="text-base font-semibold text-white mb-2">Entry Data</h3>
+            <div className="mt-4 p-3 bg-surface-secondary rounded-lg">
+              <h3 className="text-base font-semibold text-text-primary mb-2">Entry Data</h3>
 
               {isReadingEntry && (
-                <div className="flex items-center gap-2 text-blue-400">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                <div className="flex items-center gap-2 text-accent-info">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-accent-info"></div>
                   <span>Reading entry {currentFrame.toLocaleString()}...</span>
                 </div>
               )}
 
               {entryError && (
-                <div className="text-red-400">
+                <div className="text-accent-critical">
                   <span className="font-semibold">Error:</span> {entryError}
                 </div>
               )}
@@ -112,11 +112,11 @@ function HistoryPage() {
               {!isReadingEntry && !entryError && parsedFrame && (
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <span className="text-gray-300">
-                      Entry ID: <span className="text-blue-400 font-mono">
+                    <span className="text-text-secondary">
+                      Entry ID: <span className="text-accent-info font-mono">
                         {parsedFrame.stateId ? Long.fromBytesLE(Array.from(parsedFrame.stateId)).toString() : 'N/A'}
                         {parsedFrame.stateId && (
-                          <span className="text-gray-500 ml-2">
+                          <span className="text-text-muted ml-2">
                             ({Array.from(parsedFrame.stateId).map(b => b.toString(16).padStart(2, '0')).join(' ')})
                           </span>
                         )}
@@ -125,25 +125,25 @@ function HistoryPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <div className="bg-gray-900 p-3 rounded">
-                      <div className="text-sm text-gray-400 mb-2">Frame Timestamps:</div>
+                    <div className="bg-surface-primary p-3 rounded">
+                      <div className="text-sm text-text-label mb-2">Frame Timestamps:</div>
                       <div className="text-xs space-y-2">
                         <div className="grid grid-cols-1 gap-1">
-                          <div className="text-blue-400 font-mono">
-                            <span className="text-gray-400">Local:</span> {formatTimestampNs(parsedFrame.localStampNs)}
+                          <div className="text-accent-info font-mono">
+                            <span className="text-text-label">Local:</span> {formatTimestampNs(parsedFrame.localStampNs)}
                           </div>
-                          <div className="text-green-400 font-mono">
-                            <span className="text-gray-400">Monotonic:</span> {formatTimestampNs(parsedFrame.monotonicStampNs)}
+                          <div className="text-accent-success font-mono">
+                            <span className="text-text-label">Monotonic:</span> {formatTimestampNs(parsedFrame.monotonicStampNs)}
                           </div>
-                          <div className="text-yellow-400 font-mono">
-                            <span className="text-gray-400">App Start ID:</span> {parsedFrame.appStartId ? parsedFrame.appStartId.toString() : 'N/A'}
+                          <div className="text-accent-warning font-mono">
+                            <span className="text-text-label">App Start ID:</span> {parsedFrame.appStartId ? parsedFrame.appStartId.toString() : 'N/A'}
                           </div>
                           {(() => {
                             const { date } = formatLocalTimestamp(parsedFrame.localStampNs);
                             return date ? (
-                              <div className="text-purple-400 font-mono space-y-1">
-                                <div><span className="text-gray-400">Local Date:</span> {date.toLocaleDateString()}</div>
-                                <div><span className="text-gray-400">Local Time:</span> {date.toLocaleTimeString()}</div>
+                              <div className="text-accent-secondary font-mono space-y-1">
+                                <div><span className="text-text-label">Local Date:</span> {date.toLocaleDateString()}</div>
+                                <div><span className="text-text-label">Local Time:</span> {date.toLocaleTimeString()}</div>
                               </div>
                             ) : null;
                           })()}
@@ -151,16 +151,16 @@ function HistoryPage() {
                       </div>
                     </div>
 
-                    <div className="bg-gray-900 p-3 rounded">
-                      <div className="text-sm text-gray-400 mb-2">Frame Queues:</div>
+                    <div className="bg-surface-primary p-3 rounded">
+                      <div className="text-sm text-text-label mb-2">Frame Queues:</div>
                       <div className="text-xs space-y-2">
                         {parsedFrame.st3215 && (
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{parsedFrame.st3215.queueId}</span>
-                              <span className="text-blue-400 text-xs px-1 py-0.5 bg-blue-900/30 rounded">ST3215</span>
+                              <span className="text-accent-warning font-mono">{parsedFrame.st3215.queueId}</span>
+                              <span className="text-accent-info text-xs px-1 py-0.5 bg-accent-info/10 rounded">ST3215</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(parsedFrame.st3215.ptr)}
                             </div>
                           </div>
@@ -168,10 +168,10 @@ function HistoryPage() {
                         {parsedFrame.videoQueues?.map((video, idx) => (
                           <div key={idx} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{video.queueId}</span>
-                              <span className="text-green-400 text-xs px-1 py-0.5 bg-green-900/30 rounded">VIDEO</span>
+                              <span className="text-accent-warning font-mono">{video.queueId}</span>
+                              <span className="text-accent-success text-xs px-1 py-0.5 bg-accent-success/10 rounded">VIDEO</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(video.ptr)}
                             </div>
                           </div>
@@ -179,10 +179,10 @@ function HistoryPage() {
                         {parsedFrame.mirroring && (
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{parsedFrame.mirroring.queueId}</span>
-                              <span className="text-purple-400 text-xs px-1 py-0.5 bg-purple-900/30 rounded">MIRRORING</span>
+                              <span className="text-accent-warning font-mono">{parsedFrame.mirroring.queueId}</span>
+                              <span className="text-accent-secondary text-xs px-1 py-0.5 bg-accent-secondary/10 rounded">MIRRORING</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(parsedFrame.mirroring.ptr)}
                             </div>
                           </div>
@@ -190,10 +190,10 @@ function HistoryPage() {
                         {parsedFrame.normvla && (
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{parsedFrame.normvla.queueId}</span>
-                              <span className="text-orange-400 text-xs px-1 py-0.5 bg-orange-900/30 rounded">INFERENCE</span>
+                              <span className="text-accent-warning font-mono">{parsedFrame.normvla.queueId}</span>
+                              <span className="text-accent-danger text-xs px-1 py-0.5 bg-accent-danger/10 rounded">INFERENCE</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(parsedFrame.normvla.ptr)}
                             </div>
                           </div>
@@ -201,10 +201,10 @@ function HistoryPage() {
                         {parsedFrame.sysinfo && (
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{parsedFrame.sysinfo.queueId}</span>
-                              <span className="text-cyan-400 text-xs px-1 py-0.5 bg-cyan-900/30 rounded">SYSINFO</span>
+                              <span className="text-accent-warning font-mono">{parsedFrame.sysinfo.queueId}</span>
+                              <span className="text-accent-data text-xs px-1 py-0.5 bg-accent-data/10 rounded">SYSINFO</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(parsedFrame.sysinfo.ptr)}
                             </div>
                           </div>
@@ -212,10 +212,10 @@ function HistoryPage() {
                         {parsedFrame.otherEntries && Object.entries(parsedFrame.otherEntries).map(([queueId, entry]) => (
                           <div key={queueId} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-yellow-400 font-mono">{queueId}</span>
-                              <span className="text-gray-400 text-xs px-1 py-0.5 bg-gray-700/30 rounded">OTHER</span>
+                              <span className="text-accent-warning font-mono">{queueId}</span>
+                              <span className="text-text-label text-xs px-1 py-0.5 bg-surface-tertiary/30 rounded">OTHER</span>
                             </div>
-                            <div className="text-gray-400 font-mono">
+                            <div className="text-text-label font-mono">
                               {formatPtrBytes(entry.ptr)}
                             </div>
                           </div>
@@ -227,15 +227,15 @@ function HistoryPage() {
               )}
 
               {!isReadingEntry && !entryError && !parsedFrame && (
-                <div className="text-gray-400 text-sm">
+                <div className="text-text-label text-sm">
                   Click on a frame in the timeline to read its entry data
                 </div>
               )}
             </div>
 
             {parsedFrame && (
-              <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-                <h3 className="text-base font-semibold text-white mb-2">Queue Entries</h3>
+              <div className="mt-4 p-3 bg-surface-secondary rounded-lg">
+                <h3 className="text-base font-semibold text-text-primary mb-2">Queue Entries</h3>
                 <div className="space-y-3">
                   {parsedFrame.st3215 && (
                     <HistoryElement

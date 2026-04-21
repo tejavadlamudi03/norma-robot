@@ -12,7 +12,7 @@ function AsciiRobotComponent() {
 
   return (
     <div className="flex flex-col items-center gap-3 font-mono select-none">
-      <pre className="text-gray-500 text-sm leading-tight text-center">
+      <pre className="text-text-muted text-sm leading-tight text-center">
         {`  ╭───╮\n  │${FRAMES[frameIdx]}│\n  ╰───╯\n  ─ │ ─\n  ─────`}
       </pre>
       <p className="empty-state-rainbow text-lg">

@@ -73,12 +73,12 @@ const TickLabel = memo(function TickLabel({
 
   return (
     <div
-      className="absolute text-xs text-gray-400"
+      className="absolute text-xs text-text-label"
       style={{ left: `${Math.max(0, Math.min(100, framePercent))}%`, transform: getTransform() }}
     >
       <div>{frame.toLocaleString()}</div>
       {data.timestamp && (
-        <div className="text-gray-500 text-[10px] mt-1">
+        <div className="text-text-muted text-[10px] mt-1">
           <div>{data.timestamp.toLocaleDateString()}</div>
           <div>{data.timestamp.toLocaleTimeString()}</div>
         </div>

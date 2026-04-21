@@ -25,7 +25,7 @@ const St3215JsonView = memo(function St3215JsonView({ data }: St3215JsonViewProp
       result.push(jsonString.substring(lastIndex, p.index));
       const hexdump = hexdumps.find((h) => h.placeholder === p.placeholder);
       result.push(
-        <span key={p.placeholder} className="text-green-400">{hexdump?.content}</span>
+        <span key={p.placeholder} className="text-accent-success">{hexdump?.content}</span>
       );
       lastIndex = p.index + `"${p.placeholder}"`.length;
     }
@@ -35,8 +35,8 @@ const St3215JsonView = memo(function St3215JsonView({ data }: St3215JsonViewProp
 
   return (
     <div>
-      <div className="text-xs text-gray-400 mb-1">ST3215 InferenceState JSON:</div>
-      <div className="bg-gray-900 p-2 rounded text-xs font-mono text-orange-400 overflow-x-auto max-h-64 overflow-y-auto">
+      <div className="text-xs text-text-label mb-1">ST3215 InferenceState JSON:</div>
+      <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-danger overflow-x-auto max-h-64 overflow-y-auto">
         <pre>{parts}</pre>
       </div>
     </div>

@@ -138,7 +138,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
         <div className="space-y-2">
           <div className="flex gap-2 max-h-56">
             {data.joints && data.joints.length > 0 && (
-              <div className="bg-gray-950 rounded w-56 h-56 flex-shrink-0 overflow-hidden">
+              <div className="bg-surface-base rounded w-56 h-56 flex-shrink-0 overflow-hidden">
                 <NormvlaRobotRenderer joints={data.joints} />
               </div>
             )}
@@ -149,7 +149,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
                     key={image.idx}
                     src={image.url}
                     alt={`Frame ${image.idx}`}
-                    className="h-56 rounded border border-gray-600 flex-shrink-0 cursor-pointer hover:border-blue-400 transition-colors"
+                    className="h-56 rounded border border-border-subtle flex-shrink-0 cursor-pointer hover:border-accent-info transition-colors"
                     onClick={() => setFullscreenImage({ src: image.url, alt: `Frame ${image.idx}` })}
                   />
                 ))}
@@ -157,7 +157,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
             )}
           </div>
           {data.joints && data.joints.length > 0 && (
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-text-label">
               Joints: {data.joints.length}
             </div>
           )}
@@ -167,27 +167,27 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (type === 'st3215tx' && data instanceof st3215.TxEnvelope) {
       return (
         <div className="space-y-2">
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-text-label">
             Bus: {data.targetBusSerial ?? 'N/A'}
           </div>
           {data.write && (
-            <div className="bg-gray-900 p-2 rounded text-xs">
-              <div className="text-cyan-400 mb-1">Write Command:</div>
-              <div className="text-gray-300">
+            <div className="bg-surface-primary p-2 rounded text-xs">
+              <div className="text-accent-data mb-1">Write Command:</div>
+              <div className="text-text-secondary">
                 Motor: {data.write.motorId}, Addr: {data.write.address}, Value: {data.write.value?.length ?? 0} bytes
               </div>
             </div>
           )}
           {data.regWrite && (
-            <div className="bg-gray-900 p-2 rounded text-xs">
-              <div className="text-purple-400 mb-1">RegWrite Command:</div>
-              <div className="text-gray-300">
+            <div className="bg-surface-primary p-2 rounded text-xs">
+              <div className="text-accent-secondary mb-1">RegWrite Command:</div>
+              <div className="text-text-secondary">
                 Motor: {data.regWrite.motorId}, Addr: {data.regWrite.address}, Value: {data.regWrite.value?.length ?? 0} bytes
               </div>
             </div>
           )}
           {data.action && (
-            <div className="bg-gray-900 p-2 rounded text-xs text-green-400">
+            <div className="bg-surface-primary p-2 rounded text-xs text-accent-success">
               Action: Motor {data.action.motorId}
             </div>
           )}
@@ -198,7 +198,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
       return <RawBytesExpanded data={data} />;
     }
     return (
-      <div className="bg-gray-900 p-2 rounded text-xs text-gray-400">
+      <div className="bg-surface-primary p-2 rounded text-xs text-text-label">
         Unknown parsed data type
       </div>
     );
@@ -208,8 +208,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (type === 'usbvideo' && data instanceof usbvideo.RxEnvelope) {
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">USB Video RxEnvelope JSON (cropped data):</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-yellow-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">USB Video RxEnvelope JSON (cropped data):</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-warning overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{createCroppedJson(data)}</pre>
           </div>
         </div>
@@ -221,8 +221,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (type === 'mirroring' && data instanceof motors_mirroring.RxEnvelope) {
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">Mirroring RxEnvelope JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-purple-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">Mirroring RxEnvelope JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-secondary overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify(data, null, 2)}</pre>
           </div>
         </div>
@@ -231,8 +231,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (type === 'sysinfo' && data instanceof sysinfo.Envelope) {
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">Sysinfo JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-cyan-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">Sysinfo JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-data overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify(data, null, 2)}</pre>
           </div>
         </div>
@@ -255,8 +255,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
       }
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">NormVLA Frame JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-orange-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">NormVLA Frame JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-danger overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify(croppedData, null, 2)}</pre>
           </div>
         </div>
@@ -265,8 +265,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (type === 'st3215tx' && data instanceof st3215.TxEnvelope) {
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">ST3215 TxEnvelope JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-cyan-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">ST3215 TxEnvelope JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-data overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify(data, null, 2)}</pre>
           </div>
         </div>
@@ -275,8 +275,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
     if (!(data instanceof Uint8Array)) {
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-gray-200 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-text-secondary overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify(data, null, 2)}</pre>
           </div>
         </div>
@@ -287,8 +287,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
       if (protoResult) {
         return (
           <div>
-            <div className="text-xs text-gray-400 mb-1">Decoded as {protoResult.typeName}:</div>
-            <div className="bg-gray-900 p-2 rounded text-xs font-mono text-yellow-400 overflow-x-auto max-h-64 overflow-y-auto">
+            <div className="text-xs text-text-label mb-1">Decoded as {protoResult.typeName}:</div>
+            <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-warning overflow-x-auto max-h-64 overflow-y-auto">
               <pre>{JSON.stringify(protoResult.decoded, null, 2)}</pre>
             </div>
           </div>
@@ -296,8 +296,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
       }
       return (
         <div>
-          <div className="text-xs text-gray-400 mb-1">Raw bytes JSON:</div>
-          <div className="bg-gray-900 p-2 rounded text-xs font-mono text-yellow-400 overflow-x-auto max-h-64 overflow-y-auto">
+          <div className="text-xs text-text-label mb-1">Raw bytes JSON:</div>
+          <div className="bg-surface-primary p-2 rounded text-xs font-mono text-accent-warning overflow-x-auto max-h-64 overflow-y-auto">
             <pre>{JSON.stringify({ bytes: Array.from(data), length: data.length }, null, 2)}</pre>
           </div>
         </div>
@@ -311,7 +311,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
       return <RawBytesExpanded data={rawPayload} />;
     }
     return (
-      <div className="bg-gray-900 p-2 rounded text-xs text-gray-400">
+      <div className="bg-surface-primary p-2 rounded text-xs text-text-label">
         Raw data not available for this entry.
       </div>
     );
@@ -319,7 +319,7 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2 border-b border-gray-700">
+      <div className="flex items-center gap-2 border-b border-border-default">
         {TAB_OPTIONS.filter((tab) => availableTabs.includes(tab.id)).map((tab) => {
           const isActive = tab.id === activeTab;
           return (
@@ -329,8 +329,8 @@ export default function ExpandedView({ data, type, rawData }: ExpandedViewProps)
               onClick={() => setUserSelectedTab(tab.id)}
               className={`text-xs px-2 py-1 rounded-t transition-all duration-150 border cursor-pointer select-none ${
                 isActive
-                  ? 'bg-gray-800 text-white border-gray-700 border-b-gray-800'
-                  : 'text-gray-400 border-transparent hover:text-gray-200 hover:bg-gray-800/50 active:bg-gray-700 active:scale-95'
+                  ? 'bg-surface-secondary text-text-primary border-border-default border-b-surface-secondary'
+                  : 'text-text-label border-transparent hover:text-text-secondary hover:bg-surface-secondary/50 active:bg-surface-tertiary active:scale-95'
               }`}
             >
               {tab.label}

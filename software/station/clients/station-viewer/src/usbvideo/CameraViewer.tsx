@@ -72,7 +72,7 @@ const CameraViewer = memo(function CameraViewer({ inferenceState }: CameraViewer
   }, [imageUrl]);
 
   if (!inferenceState) {
-    return <div className="text-white p-4">Waiting for USB Video data...</div>;
+    return <div className="text-text-primary p-4">Waiting for USB Video data...</div>;
   }
 
   return (
@@ -85,9 +85,9 @@ const CameraViewer = memo(function CameraViewer({ inferenceState }: CameraViewer
             className="h-full object-contain"
           />
         )}
-        <div className="absolute top-0 right-0 p-2 text-right bg-gray-750 bg-opacity-50 rounded-bl-lg">
-          <span className="text-xs text-gray-400">FPS: </span>
-          <span className="text-xs font-mono text-cyan-400">{fps.toFixed(1)}</span>
+        <div className="absolute top-0 right-0 p-2 text-right bg-surface-secondary/50 rounded-bl-lg">
+          <span className="text-xs text-text-label">FPS: </span>
+          <span className="text-xs font-mono text-accent-data">{fps.toFixed(1)}</span>
         </div>
       </div>
     </div>

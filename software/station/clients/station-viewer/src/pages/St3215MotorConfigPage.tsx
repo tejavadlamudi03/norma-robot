@@ -208,16 +208,16 @@ const St3215MotorConfigPage: React.FC = () => {
     const motorId = motorState ? getMotorIdFromState(motorState) : 0;
 
     return (
-      <div className="min-h-screen bg-black text-green-400 font-mono p-6">
+      <div className="min-h-screen bg-surface-base text-accent-success font-mono p-6">
         <div className="container mx-auto">
           <div className="flex items-center gap-4 mb-6">
             <Link
               to="/"
-              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+              className="px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
             >
               ← Back to Home
             </Link>
-            <h1 className="text-3xl font-bold text-cyan-400">
+            <h1 className="text-3xl font-bold text-accent-data">
               Bus: {selectedBus.bus?.serialNumber || 'Unknown'}
             </h1>
           </div>
@@ -225,24 +225,24 @@ const St3215MotorConfigPage: React.FC = () => {
           {/* Priority 1: Show error dump if error detected (but not during or after recent motor ID change) */}
           {busStatus.errorDump && !isMotorIdSetInProgress && (Date.now() - motorIdSetStartTime > 1000) ? (
             <div className="space-y-6">
-              <div className="bg-orange-900 border border-orange-600 rounded-lg p-6">
+              <div className="bg-accent-danger/10 border border-accent-danger-deep rounded-lg p-6">
                 <div className="flex items-start gap-3">
-                  <div className="text-orange-400 text-2xl">⚠️</div>
+                  <div className="text-accent-danger text-2xl">⚠️</div>
                   <div className="flex-1">
-                    <div className="text-2xl font-bold text-orange-200 mb-4">
+                    <div className="text-2xl font-bold text-accent-danger mb-4">
                       Do you have multiple ST3215 connected to the bus?
                     </div>
 
-                    <h2 className="text-xl font-bold text-orange-300 mb-2">ST3215 Communication Error Detected</h2>
+                    <h2 className="text-xl font-bold text-accent-danger mb-2">ST3215 Communication Error Detected</h2>
 
                     <div className="mb-4">
-                      <div className="text-orange-200 font-bold mb-2">Unexpected Response from Motor ID {busStatus.errorDump.motorId}</div>
-                      <div className="text-orange-100 text-sm leading-relaxed mb-3">
+                      <div className="text-accent-danger font-bold mb-2">Unexpected Response from Motor ID {busStatus.errorDump.motorId}</div>
+                      <div className="text-accent-danger text-sm leading-relaxed mb-3">
                         We sent a command and expected a valid response, but received an error response instead.
                         This might indicate multiple motors with the same ID are connected to the bus, causing response conflicts.
                       </div>
                       {busStatus.errorDump.errorDescription && (
-                        <div className="text-yellow-200 text-sm mb-3">
+                        <div className="text-accent-warning text-sm mb-3">
                           <strong>Error:</strong> {busStatus.errorDump.errorDescription}
                         </div>
                       )}
@@ -251,9 +251,9 @@ const St3215MotorConfigPage: React.FC = () => {
                     {/* Command Packet Hex Dump */}
                     {busStatus.errorDump.commandPacket && busStatus.errorDump.commandPacket.length > 0 && (
                       <div className="mb-4">
-                        <div className="text-cyan-300 font-bold mb-2 text-sm">Command Sent (Request):</div>
-                        <div className="bg-black rounded p-3 font-mono text-xs overflow-x-auto">
-                          <div className="text-green-400">
+                        <div className="text-accent-data font-bold mb-2 text-sm">Command Sent (Request):</div>
+                        <div className="bg-surface-base rounded p-3 font-mono text-xs overflow-x-auto">
+                          <div className="text-accent-success">
                             {Array.from(busStatus.errorDump.commandPacket)
                               .map(byte => byte.toString(16).padStart(2, '0').toUpperCase())
                               .join(' ')}
@@ -265,9 +265,9 @@ const St3215MotorConfigPage: React.FC = () => {
                     {/* Response Packet Hex Dump - hide for timeout errors (SEK_TIMEOUT = 6) */}
                     {busStatus.errorDump.errorKind !== 6 && busStatus.errorDump.responsePacket && busStatus.errorDump.responsePacket.length > 0 && (
                       <div className="mb-4">
-                        <div className="text-cyan-300 font-bold mb-2 text-sm">Response Received (Error):</div>
-                        <div className="bg-black rounded p-3 font-mono text-xs overflow-x-auto">
-                          <div className="text-orange-400">
+                        <div className="text-accent-data font-bold mb-2 text-sm">Response Received (Error):</div>
+                        <div className="bg-surface-base rounded p-3 font-mono text-xs overflow-x-auto">
+                          <div className="text-accent-danger">
                             {Array.from(busStatus.errorDump.responsePacket)
                               .map(byte => byte.toString(16).padStart(2, '0').toUpperCase())
                               .join(' ')}
@@ -276,9 +276,9 @@ const St3215MotorConfigPage: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="bg-orange-950 border border-orange-700 rounded p-4 mt-4">
-                      <div className="text-yellow-300 font-bold mb-2">ST3215 Bus Limitation</div>
-                      <div className="text-gray-200 text-sm leading-relaxed space-y-2">
+                    <div className="bg-accent-danger/5 border border-accent-danger-deep rounded p-4 mt-4">
+                      <div className="text-accent-warning font-bold mb-2">ST3215 Bus Limitation</div>
+                      <div className="text-text-secondary text-sm leading-relaxed space-y-2">
                         <p>
                           The ST3215 serial bus protocol does not support automatic motor discovery.
                           Motors must be configured individually BEFORE connecting them together:
@@ -290,7 +290,7 @@ const St3215MotorConfigPage: React.FC = () => {
                           <li>Repeat for each motor with a different ID</li>
                           <li>Only after all motors have unique IDs, connect them to the same bus</li>
                         </ol>
-                        <p className="mt-3 text-yellow-200">
+                        <p className="mt-3 text-accent-warning">
                           <strong>Note:</strong> Only one motor should be connected to the bus at a time during ID configuration.
                         </p>
                       </div>
@@ -302,25 +302,25 @@ const St3215MotorConfigPage: React.FC = () => {
           ) : /* Priority 2: Show multiple motors warning (but not during or after recent motor ID change) */
           busStatus.motorsCount > 1 && !isMotorIdSetInProgress && (Date.now() - motorIdSetStartTime > 1000) ? (
             <div className="space-y-6">
-              <div className="bg-orange-900 border border-orange-600 rounded-lg p-6">
+              <div className="bg-accent-danger/10 border border-accent-danger-deep rounded-lg p-6">
                 <div className="flex items-start gap-3">
-                  <div className="text-orange-400 text-2xl">⚠️</div>
+                  <div className="text-accent-danger text-2xl">⚠️</div>
                   <div className="flex-1">
-                    <div className="text-2xl font-bold text-orange-200 mb-4">
+                    <div className="text-2xl font-bold text-accent-danger mb-4">
                       Do you have multiple ST3215 connected to the bus?
                     </div>
 
-                    <h2 className="text-xl font-bold text-orange-300 mb-2">ST3215 Bus Warning</h2>
+                    <h2 className="text-xl font-bold text-accent-danger mb-2">ST3215 Bus Warning</h2>
 
                     <div className="mb-4">
-                      <div className="text-orange-200 font-bold mb-2">Multiple Motors Detected</div>
-                      <div className="text-orange-100 text-sm leading-relaxed mb-3">
+                      <div className="text-accent-danger font-bold mb-2">Multiple Motors Detected</div>
+                      <div className="text-accent-danger text-sm leading-relaxed mb-3">
                         To safely configure motor IDs, connect only one motor at a time.
                       </div>
                       {selectedBus.motors && selectedBus.motors.length > 0 && (
-                        <div className="bg-black rounded p-3 font-mono text-sm mb-3">
-                          <div className="text-cyan-300 mb-1">Detected Motor IDs:</div>
-                          <div className="text-green-400">
+                        <div className="bg-surface-base rounded p-3 font-mono text-sm mb-3">
+                          <div className="text-accent-data mb-1">Detected Motor IDs:</div>
+                          <div className="text-accent-success">
                             {selectedBus.motors
                               .filter(m => (m.error?.kind ?? 0) === 0)
                               .map(m => m.id ?? 0)
@@ -328,14 +328,14 @@ const St3215MotorConfigPage: React.FC = () => {
                           </div>
                         </div>
                       )}
-                      <div className="text-yellow-200 text-sm">
+                      <div className="text-accent-warning text-sm">
                         <strong>Action:</strong> Disconnect all motors except the one you want to configure.
                       </div>
                     </div>
 
-                    <div className="bg-orange-950 border border-orange-700 rounded p-4 mt-4">
-                      <div className="text-yellow-300 font-bold mb-2">Motor ID Setup Procedure</div>
-                      <div className="text-gray-200 text-sm leading-relaxed space-y-2">
+                    <div className="bg-accent-danger/5 border border-accent-danger-deep rounded p-4 mt-4">
+                      <div className="text-accent-warning font-bold mb-2">Motor ID Setup Procedure</div>
+                      <div className="text-text-secondary text-sm leading-relaxed space-y-2">
                         <p>
                           When setting up motors with unknown IDs:
                         </p>
@@ -358,40 +358,40 @@ const St3215MotorConfigPage: React.FC = () => {
               {/* Motor Info - only show if we have motor data */}
               {motor && motorState && (
                 <>
-                  <div className="bg-gray-900 rounded-lg p-6">
-                    <h2 className="text-xl font-bold text-yellow-400 mb-4">Motor Information</h2>
+                  <div className="bg-surface-primary rounded-lg p-6">
+                    <h2 className="text-xl font-bold text-accent-warning mb-4">Motor Information</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
                       <div>
-                        <span className="text-gray-500">Current Motor ID:</span>
-                        <span className="text-green-400 ml-2 font-bold">{motorId}</span>
+                        <span className="text-text-muted">Current Motor ID:</span>
+                        <span className="text-accent-success ml-2 font-bold">{motorId}</span>
                       </div>
                       <div>
-                        <span className="text-gray-500">State Size:</span>
-                        <span className="text-cyan-400 ml-2">{motorState.length} bytes</span>
+                        <span className="text-text-muted">State Size:</span>
+                        <span className="text-accent-data ml-2">{motorState.length} bytes</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Motor State Hex Dump */}
-                  <div className="bg-gray-900 rounded-lg p-6">
-                    <h2 className="text-xl font-bold text-yellow-400 mb-4">Motor State (Hex Dump)</h2>
-                    <div className="bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                      <div className="text-gray-500 mb-2">Address  00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</div>
+                  <div className="bg-surface-primary rounded-lg p-6">
+                    <h2 className="text-xl font-bold text-accent-warning mb-4">Motor State (Hex Dump)</h2>
+                    <div className="bg-surface-base rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                      <div className="text-text-muted mb-2">Address  00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</div>
                       {Array.from({ length: Math.ceil(motorState.length / 16) }, (_, rowIndex) => {
                         const startAddr = rowIndex * 16;
                         const rowData = motorState.slice(startAddr, startAddr + 16);
                         return (
                           <div key={rowIndex} className="flex gap-2">
-                            <span className="text-gray-500 w-16">
+                            <span className="text-text-muted w-16">
                               {startAddr.toString(16).padStart(8, '0').toUpperCase()}
                             </span>
-                            <span className="text-green-400">
+                            <span className="text-accent-success">
                               {Array.from(rowData)
                                 .map(byte => byte.toString(16).padStart(2, '0').toUpperCase())
                                 .join(' ')
                                 .padEnd(47, ' ')}
                             </span>
-                            <span className="text-gray-400">
+                            <span className="text-text-label">
                               {Array.from(rowData)
                                 .map(byte => (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : '.')
                                 .join('')}
@@ -405,15 +405,15 @@ const St3215MotorConfigPage: React.FC = () => {
               )}
 
               {/* Control Buttons */}
-              <div className="bg-gray-900 rounded-lg p-6">
-                <h2 className="text-xl font-bold text-yellow-400 mb-4">Motor Control</h2>
+              <div className="bg-surface-primary rounded-lg p-6">
+                <h2 className="text-xl font-bold text-accent-warning mb-4">Motor Control</h2>
 
                 {/* Motor ID Setting */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-cyan-400 mb-3">Set Motor ID</h3>
+                  <h3 className="text-lg font-bold text-accent-data mb-3">Set Motor ID</h3>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <label htmlFor="motorId" className="text-gray-400 text-sm">New Motor ID:</label>
+                      <label htmlFor="motorId" className="text-text-label text-sm">New Motor ID:</label>
                       <input
                         id="motorId"
                         type="number"
@@ -423,17 +423,17 @@ const St3215MotorConfigPage: React.FC = () => {
                         onClick={(e) => (e.target as HTMLInputElement).select()}
                         onChange={(e) => setNewMotorId(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
                         disabled={isMotorIdSetInProgress}
-                        className="w-20 px-3 py-2 bg-gray-800 text-green-400 border border-gray-600 rounded focus:border-cyan-400 focus:outline-none disabled:opacity-50"
+                        className="w-20 px-3 py-2 bg-surface-secondary text-accent-success border border-border-subtle rounded focus:border-accent-data focus:outline-none disabled:opacity-50"
                       />
-                      <span className="text-gray-500 text-sm">(1-10)</span>
+                      <span className="text-text-muted text-sm">(1-10)</span>
                     </div>
                     <button
                       onClick={handleSetMotorId}
                       disabled={isMotorIdSetInProgress || newMotorId < 1 || newMotorId > 10}
                       className={`px-6 py-2 rounded-lg transition-colors font-bold ${
                         isMotorIdSetInProgress || newMotorId < 1 || newMotorId > 10
-                          ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          ? 'bg-surface-elevated text-text-label cursor-not-allowed'
+                          : 'bg-accent-info-bg text-text-primary hover:bg-accent-info-deep'
                       }`}
                     >
                       {isMotorIdSetInProgress ? 'Setting Motor ID...' : 'Set Motor ID'}
@@ -442,16 +442,16 @@ const St3215MotorConfigPage: React.FC = () => {
 
                   {/* Command Log */}
                   {commandLog.length > 0 && (
-                    <div className="mt-4 bg-black rounded-lg p-4 font-mono text-sm max-h-64 overflow-y-auto">
-                      <div className="text-cyan-400 font-bold mb-2">Command Log:</div>
+                    <div className="mt-4 bg-surface-base rounded-lg p-4 font-mono text-sm max-h-64 overflow-y-auto">
+                      <div className="text-accent-data font-bold mb-2">Command Log:</div>
                       {commandLog.map((log, index) => (
                         <div
                           key={index}
                           className={`${
-                            log.startsWith('✓') ? 'text-green-400' :
-                            log.startsWith('✗') ? 'text-red-400' :
-                            log.includes('Waiting') ? 'text-yellow-400' :
-                            'text-gray-400'
+                            log.startsWith('✓') ? 'text-accent-success' :
+                            log.startsWith('✗') ? 'text-accent-critical' :
+                            log.includes('Waiting') ? 'text-accent-warning' :
+                            'text-text-label'
                           }`}
                         >
                           {log}
@@ -464,8 +464,8 @@ const St3215MotorConfigPage: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-gray-900 rounded-lg p-6">
-              <div className="text-gray-400">No motor data available for this bus.</div>
+            <div className="bg-surface-primary rounded-lg p-6">
+              <div className="text-text-label">No motor data available for this bus.</div>
             </div>
           )}
         </div>
@@ -474,15 +474,15 @@ const St3215MotorConfigPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-green-400 font-mono p-6">
+    <div className="min-h-screen bg-surface-base text-accent-success font-mono p-6">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold text-cyan-400 mb-4">ST3215 Motor ID Configuration</h1>
-        <p className="text-gray-400 mb-4">
+        <h1 className="text-3xl font-bold text-accent-data mb-4">ST3215 Motor ID Configuration</h1>
+        <p className="text-text-label mb-4">
           No bus selected for configuration. Please go back to the main page and select a bus.
         </p>
         <Link
             to="/"
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+            className="px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
         >
             ← Back to Home
         </Link>

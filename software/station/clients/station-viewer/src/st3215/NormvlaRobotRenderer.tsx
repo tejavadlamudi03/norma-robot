@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import URDFLoader from 'urdf-loader';
 import { normvla } from '@/api/proto';
 import { appendHash } from '@/utils/asset-hashes';
+import { useTheme } from '@/hooks/useTheme';
+import { getRendererThemeColors } from '@/utils/theme-colors';
 
 interface NormvlaRobotRendererProps {
   joints: normvla.IJoint[];
@@ -116,18 +118,40 @@ class NormvlaArm {
 }
 
 const NormvlaRobotRenderer = ({ joints }: NormvlaRobotRendererProps) => {
+  const { theme } = useTheme();
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
     controls: OrbitControls;
+    gridHelper: THREE.GridHelper | null;
     arm: NormvlaArm | null;
     robot: THREE.Object3D | null;
     animationId: number;
   } | null>(null);
   const jointsRef = useRef<normvla.IJoint[]>(joints);
   const isInitializedRef = useRef(false);
+
+  const createGridHelper = () => {
+    const colors = getRendererThemeColors(theme);
+    return new THREE.GridHelper(2, 20, colors.gridPrimary, colors.gridSecondary);
+  };
+
+  const applySceneTheme = () => {
+    if (!sceneRef.current) return;
+
+    const colors = getRendererThemeColors(theme);
+    sceneRef.current.scene.background = colors.sceneBackground;
+
+    if (sceneRef.current.gridHelper) {
+      sceneRef.current.scene.remove(sceneRef.current.gridHelper);
+      disposeObject3D(sceneRef.current.gridHelper);
+    }
+
+    sceneRef.current.gridHelper = createGridHelper();
+    sceneRef.current.scene.add(sceneRef.current.gridHelper);
+  };
 
   useEffect(() => {
     jointsRef.current = joints;
@@ -154,7 +178,6 @@ const NormvlaRobotRenderer = ({ joints }: NormvlaRobotRendererProps) => {
     isInitializedRef.current = true;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x303030);
 
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -177,9 +200,6 @@ const NormvlaRobotRenderer = ({ joints }: NormvlaRobotRendererProps) => {
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
-    const gridHelper = new THREE.GridHelper(2, 20);
-    scene.add(gridHelper);
-
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -189,10 +209,13 @@ const NormvlaRobotRenderer = ({ joints }: NormvlaRobotRendererProps) => {
       camera,
       renderer,
       controls,
+      gridHelper: null,
       arm: null,
       robot: null,
       animationId: 0
     };
+
+    applySceneTheme();
 
     const jointCount = jointsRef.current?.length ?? 6;
     const isElrobot = jointCount === 8;
@@ -315,6 +338,12 @@ const NormvlaRobotRenderer = ({ joints }: NormvlaRobotRendererProps) => {
       }
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (!sceneRef.current || !isInitializedRef.current) return;
+    applySceneTheme();
+    sceneRef.current.renderer.render(sceneRef.current.scene, sceneRef.current.camera);
+  }, [theme]);
 
   return <div ref={mountRef} className="w-full h-full" />;
 };

@@ -14,7 +14,7 @@ const wideActionButtonClasses = `${actionButtonClasses} sm:min-w-[13.5rem]`;
 function ButtonLoadingLabel({ label }: { label: string }) {
   return (
     <span className="inline-flex items-center gap-2">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" aria-hidden="true" />
+      <span className="h-4 w-4 animate-spin rounded-full border-2 border-text-primary/30 border-t-text-primary" aria-hidden="true" />
       <span>{label}</span>
     </span>
   );
@@ -160,7 +160,7 @@ const St3215BusCalibrationPage: React.FC = () => {
       <button
         onClick={() => setShowResetConfirmation(true)}
         disabled={!hasValidMotors}
-        className={`${actionButtonClasses} bg-red-700 text-white hover:bg-red-600 active:scale-95`}
+        className={`${actionButtonClasses} bg-accent-critical-bg text-text-primary hover:bg-accent-critical-bg active:scale-95`}
       >
         Reset
       </button>
@@ -176,7 +176,7 @@ const St3215BusCalibrationPage: React.FC = () => {
           <button
             onClick={handleStopCalibration}
             disabled={!hasValidMotors}
-            className={`${wideActionButtonClasses} border-2 border-transparent bg-orange-600 text-white shadow-lg shadow-orange-500/30 hover:bg-orange-500 hover:scale-105 active:scale-95`}
+            className={`${wideActionButtonClasses} border-2 border-transparent bg-accent-danger-deep text-text-primary shadow-lg shadow-accent-danger-deep/30 hover:bg-accent-danger-deep hover:scale-105 active:scale-95`}
           >
             Stop Calibration
           </button>
@@ -187,7 +187,7 @@ const St3215BusCalibrationPage: React.FC = () => {
         <button
           onClick={handleAutoCalibrate}
           disabled={isCalibrationFrozen || !hasValidMotors || isLowVoltage}
-          className={`${wideActionButtonClasses} border-2 ${isLowVoltage ? 'border-yellow-500 bg-yellow-600 shadow-yellow-500/30' : 'border-purple-500 bg-purple-600 shadow-purple-500/30'} text-white shadow-lg ${isLowVoltage ? '' : 'hover:bg-purple-500 hover:scale-105 active:scale-95'}`}
+          className={`${wideActionButtonClasses} border-2 ${isLowVoltage ? 'border-accent-warning bg-accent-warning-deep shadow-accent-warning/30' : 'border-accent-secondary-deep bg-accent-secondary-bg shadow-accent-secondary-deep/30'} text-text-primary shadow-lg ${isLowVoltage ? 'hover:bg-accent-warning' : 'hover:bg-accent-secondary-deep'} hover:scale-105 active:scale-95`}
           style={{
             animation: isLowVoltage ? undefined : 'gentlePulse 2s ease-in-out infinite'
           }}
@@ -206,7 +206,7 @@ const St3215BusCalibrationPage: React.FC = () => {
         <button
           onClick={handleFreeze}
           disabled={!hasValidMotors || isSavePending}
-          className={`${actionButtonClasses} bg-blue-600 text-white shadow-lg shadow-blue-500/30 hover:bg-blue-500 hover:scale-105 active:scale-95`}
+          className={`${actionButtonClasses} bg-accent-info-bg text-text-primary shadow-lg shadow-accent-info-deep/30 hover:bg-accent-info-deep hover:scale-105 active:scale-95`}
         >
           {isSavePending ? <ButtonLoadingLabel label="Saving..." /> : 'Save'}
         </button>
@@ -216,16 +216,16 @@ const St3215BusCalibrationPage: React.FC = () => {
     return (
       <>
         <style>{customStyles}</style>
-        <div className="h-screen bg-black text-green-400 font-mono p-6 flex flex-col">
+        <div className="h-screen bg-surface-base text-accent-success font-mono p-6 flex flex-col">
         <div className="container mx-auto flex flex-col h-full overflow-hidden">
           <div className="flex flex-col gap-4 mb-4 flex-shrink-0">
             <Link
               to="/"
-              className="self-start px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+              className="self-start px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
             >
               ← Back to Bus List
             </Link>
-            <h1 className="text-3xl font-bold text-cyan-400">
+            <h1 className="text-3xl font-bold text-accent-data">
               Calibrating Bus: {currentBusState.bus?.serialNumber || 'Unknown'}
             </h1>
           </div>
@@ -251,34 +251,34 @@ const St3215BusCalibrationPage: React.FC = () => {
               </div>
             </div>
             {!hasValidMotors && (
-              <div className="px-4 py-2 bg-yellow-900/30 border border-yellow-600 rounded text-yellow-400">
+              <div className="px-4 py-2 bg-accent-warning/10 border border-accent-warning-deep rounded text-accent-warning">
                 Power disconnected or motors not detected. Calibration is unavailable.
               </div>
             )}
             {isLowVoltage && hasValidMotors && (
-              <div className="px-4 py-2 bg-yellow-900/30 border border-yellow-600 rounded text-yellow-400">
+              <div className="px-4 py-2 bg-accent-warning/10 border border-accent-warning-deep rounded text-accent-warning">
                 ⚠️ Low voltage detected ({(minVoltage / 10).toFixed(1)}V). Auto calibration is disabled. Please check power supply (requires at least 7.0V).
               </div>
             )}
             {calibrationState && calibrationState.status !== st3215.AutoCalibrationState.Status.IDLE && (
-              <div className="px-4 py-2 bg-gray-800 rounded border border-gray-600">
+              <div className="px-4 py-2 bg-surface-secondary rounded border border-border-subtle">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <span className="text-cyan-400 font-bold">
+                  <span className="text-accent-data font-bold">
                     {calibrationState.status === st3215.AutoCalibrationState.Status.IN_PROGRESS && 'Calibrating...'}
                     {calibrationState.status === st3215.AutoCalibrationState.Status.DONE && 'Calibration Complete'}
                     {calibrationState.status === st3215.AutoCalibrationState.Status.FAILED && 'Calibration Failed'}
                     {calibrationState.status === st3215.AutoCalibrationState.Status.STOPPED && 'Calibration Stopped'}
                   </span>
                   {(calibrationState.currentStep ?? 0) > 0 && (
-                    <span className="text-gray-300">
+                    <span className="text-text-secondary">
                       Step {calibrationState.currentStep} / {calibrationState.totalSteps}
                     </span>
                   )}
                   {calibrationState.currentPhase && (
-                    <span className="text-gray-400 italic">{calibrationState.currentPhase}</span>
+                    <span className="text-text-label italic">{calibrationState.currentPhase}</span>
                   )}
                   {calibrationState.errorMessage && (
-                    <span className="text-red-400">
+                    <span className="text-accent-critical">
                       {calibrationState.errorMessage}
                       {calibrationState.status === st3215.AutoCalibrationState.Status.FAILED &&
                         '. Try again or Reset and use manual calibration'}
@@ -290,10 +290,10 @@ const St3215BusCalibrationPage: React.FC = () => {
           </div>
 
           {showFreezeConfirmation && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold text-yellow-400 mb-4">Save Calibration</h2>
-                <div className="text-gray-300 mb-6">
+            <div className="fixed inset-0 bg-surface-overlay flex items-center justify-center z-50">
+              <div className="bg-surface-secondary p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl font-bold text-accent-warning mb-4">Save Calibration</h2>
+                <div className="text-text-secondary mb-6">
                   <p>Please confirm:</p>
                   <ul className="list-disc list-inside pl-4 mt-2">
                     <li>The 3D view reflects 100% of your moves.</li>
@@ -303,14 +303,14 @@ const St3215BusCalibrationPage: React.FC = () => {
                 <div className="flex justify-end gap-4">
                   <button
                     onClick={() => setShowFreezeConfirmation(false)}
-                    className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+                    className="px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={confirmFreeze}
                     disabled={isSavePending}
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition-colors"
+                    className="px-4 py-2 bg-accent-success-bg text-text-primary rounded hover:bg-accent-success-deep transition-colors"
                   >
                     {isSavePending ? <ButtonLoadingLabel label="Saving..." /> : 'Done'}
                   </button>
@@ -320,21 +320,21 @@ const St3215BusCalibrationPage: React.FC = () => {
           )}
 
           {showResetConfirmation && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold text-yellow-400 mb-4">Reset Calibration</h2>
-                <p className="text-gray-300 mb-6">Are you sure you want to reset the motor calibration? This action cannot be undone.</p>
+            <div className="fixed inset-0 bg-surface-overlay flex items-center justify-center z-50">
+              <div className="bg-surface-secondary p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl font-bold text-accent-warning mb-4">Reset Calibration</h2>
+                <p className="text-text-secondary mb-6">Are you sure you want to reset the motor calibration? This action cannot be undone.</p>
                 <div className="flex justify-end gap-4">
                   <button
                     onClick={() => navigate('/')}
-                    className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+                    className="px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleReset}
                     disabled={resetting}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 transition-colors"
+                    className="px-4 py-2 bg-accent-critical-bg text-text-primary rounded hover:bg-accent-critical-deep transition-colors"
                   >
                     {resetting ? 'Resetting...' : 'Reset'}
                   </button>
@@ -345,12 +345,12 @@ const St3215BusCalibrationPage: React.FC = () => {
 
           <div className="flex-1 relative overflow-hidden">
             {showMoveOverlay && !isCalibrating && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none">
+              <div className="absolute inset-0 z-30 flex items-center justify-center bg-surface-overlay-light backdrop-blur-sm pointer-events-none">
                 <div className="max-w-md text-center px-6 py-8">
-                  <p className="text-2xl font-bold text-yellow-400 mb-4">
+                  <p className="text-2xl font-bold text-accent-warning mb-4">
                     Move all motors through their full range
                   </p>
-                  <p className="text-gray-300 mb-4">
+                  <p className="text-text-secondary mb-4">
                     Slowly move each joint from one limit to the other so the 3D view matches your arm's position.
                   </p>
                 </div>
@@ -366,8 +366,8 @@ const St3215BusCalibrationPage: React.FC = () => {
               />
             ) : (
               <div className="relative h-full">
-                <div className="absolute inset-0 p-4 flex flex-col items-center justify-center bg-gray-900/20">
-                  <p className="text-yellow-400 mb-4 text-center">
+                <div className="absolute inset-0 p-4 flex flex-col items-center justify-center bg-surface-primary/20">
+                  <p className="text-accent-warning mb-4 text-center">
                     3D model visualization is only available for 6 or 8-motor configurations.
                     <br />
                     This bus has {currentBusState.motors?.length || 0} motor{currentBusState.motors?.length === 1 ? "" : "s"}.
@@ -392,15 +392,15 @@ const St3215BusCalibrationPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-green-400 font-mono p-6">
+    <div className="min-h-screen bg-surface-base text-accent-success font-mono p-6">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold text-cyan-400 mb-4">ST3215 Bus Calibration</h1>
-        <p className="text-gray-400 mb-4">
+        <h1 className="text-3xl font-bold text-accent-data mb-4">ST3215 Bus Calibration</h1>
+        <p className="text-text-label mb-4">
           No bus selected for calibration. Please go back to the main page and select a bus to calibrate.
         </p>
         <Link
             to="/"
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition-colors"
+            className="px-4 py-2 bg-surface-elevated text-text-primary rounded hover:bg-surface-active transition-colors"
         >
             ← Back to Bus List
         </Link>

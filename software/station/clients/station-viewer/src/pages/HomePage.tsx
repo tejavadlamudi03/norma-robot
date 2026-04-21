@@ -7,6 +7,7 @@ import { copyToClipboard } from "@/api/clipboard-utils";
 import { commandManager } from "@/api/commands";
 import { inference_tags } from "@/api/proto.js";
 import { defaultTag } from "@/utils/tag-phrases";
+import { getConnectionStatusColor, getFPSColor } from '@/utils/color-utils';
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -64,57 +65,40 @@ function HomePage() {
       console.error('Failed to send tag command:', err);
     }
   }, [latestEntryId]);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'connected': return 'text-green-400';
-      case 'connecting': return 'text-yellow-400';
-      case 'disconnected': return 'text-red-400';
-      default: return 'text-gray-400';
-    }
-  };
-
-  const getFPSColor = (fps: number) => {
-    if (fps >= 15) return 'text-green-400';
-    if (fps >= 10) return 'text-yellow-400';
-    if (fps >= 5) return 'text-orange-400';
-    return 'text-red-400';
-  };
-
   return (
     <div className="flex-1 flex flex-col">
-      <div className="relative z-20 bg-gray-900 border-b-2 border-gray-700">
+      <div className="relative z-20 bg-surface-primary border-b-2 border-border-default">
         <div className="px-4 py-2 flex flex-wrap gap-x-4 gap-y-2 items-center">
           {connectionStats && (
             <>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-2 py-1 bg-gray-800 rounded border border-gray-700">
-                  <span className="text-gray-400 text-xs uppercase tracking-wide">Status</span>
-                  <span className={`font-semibold uppercase text-xs ${getStatusColor(connectionStats.status)}`}>
+                <div className="flex items-center gap-2 px-2 py-1 bg-surface-secondary rounded border border-border-default">
+                  <span className="text-text-label text-xs uppercase tracking-wide">Status</span>
+                  <span className={`font-semibold uppercase text-xs ${getConnectionStatusColor(connectionStats.status)}`}>
                     {connectionStats.status}
                   </span>
                 </div>
                 {connectionStats.status === 'connected' && inferenceState?.st3215?.data?.buses && inferenceState.st3215.data.buses.length > 0 && (
-                  <div className="flex items-center gap-2 px-2 py-1 bg-gray-800 rounded border border-gray-700">
-                    <span className="text-gray-400 text-xs uppercase tracking-wide">FPS</span>
-                    <span className={`font-bold text-xs font-mono ${connectionStats.isFpsReady ? getFPSColor(connectionStats.fps) : 'text-gray-400'}`}>
+                  <div className="flex items-center gap-2 px-2 py-1 bg-surface-secondary rounded border border-border-default">
+                    <span className="text-text-label text-xs uppercase tracking-wide">FPS</span>
+                    <span className={`font-bold text-xs font-mono ${connectionStats.isFpsReady ? getFPSColor(connectionStats.fps) : 'text-text-label'}`}>
                       {connectionStats.isFpsReady ? `${connectionStats.fps.toFixed(1)} Hz` : '--'}
                     </span>
                   </div>
                 )}
-                <div className="group relative flex items-center gap-2 px-2 py-1 bg-gray-800 rounded border border-gray-700 cursor-pointer" onClick={handleCopyEntryId}>
-                  <span className="text-gray-400 text-xs uppercase tracking-wide">Entry ID</span>
-                  <span className={`font-bold text-xs font-mono ${copied ? 'text-green-400' : 'text-yellow-400'}`}>
+                <div className="group relative flex items-center gap-2 px-2 py-1 bg-surface-secondary rounded border border-border-default cursor-pointer" onClick={handleCopyEntryId}>
+                  <span className="text-text-label text-xs uppercase tracking-wide">Entry ID</span>
+                  <span className={`font-bold text-xs font-mono ${copied ? 'text-accent-success' : 'text-accent-warning'}`}>
                     {latestEntryId?.toLocaleString() ?? 'N/A'}
                   </span>
-                  <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-white text-xs rounded whitespace-nowrap z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 bg-surface-base text-text-primary text-xs rounded whitespace-nowrap z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
                     Click to copy
                   </div>
                 </div>
                 <button
                   onClick={handleAddTag}
                   disabled={latestEntryId === null}
-                  className="px-3 py-1 bg-purple-700 hover:bg-purple-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-xs font-bold uppercase tracking-wide rounded border border-purple-500"
+                  className="px-3 py-1 bg-accent-secondary-bg hover:bg-accent-secondary-deep disabled:bg-surface-elevated disabled:text-text-muted disabled:cursor-not-allowed text-text-primary text-xs font-bold uppercase tracking-wide rounded border border-accent-secondary"
                   title="Tag the current inference queue pointer"
                 >
                   TAG
@@ -122,27 +106,27 @@ function HomePage() {
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-mono">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-gray-500">Endpoint:</span>
-                  <span className="text-cyan-400">{connectionStats.endpoint}</span>
+                  <span className="text-text-muted">Endpoint:</span>
+                  <span className="text-accent-data">{connectionStats.endpoint}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-gray-500">Packets:</span>
-                  <span className="text-blue-400 font-semibold">{connectionStats.packetsReceived.toLocaleString()}</span>
+                  <span className="text-text-muted">Packets:</span>
+                  <span className="text-accent-info font-semibold">{connectionStats.packetsReceived.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-gray-500">Data:</span>
-                  <span className="text-purple-400 font-semibold">{formatBytes(connectionStats.bytesReceived)}</span>
+                  <span className="text-text-muted">Data:</span>
+                  <span className="text-accent-secondary font-semibold">{formatBytes(connectionStats.bytesReceived)}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-gray-500">Uptime:</span>
-                  <span className="text-green-400 font-semibold">{formatUptime(connectionStats.connectedAt)}</span>
+                  <span className="text-text-muted">Uptime:</span>
+                  <span className="text-accent-success font-semibold">{formatUptime(connectionStats.connectedAt)}</span>
                 </div>
               </div>
             </>
           )}
         </div>
       </div>
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 min-h-0 overflow-auto p-4 flex">
         {hasRobotData ? (
           <BusViewer
             inferenceState={inferenceState!.st3215!.data}
@@ -150,7 +134,7 @@ function HomePage() {
             mirroringState={inferenceState?.mirroring?.data.state || undefined}
           />
         ) : (
-          <div className="flex h-full min-h-[240px] items-center justify-center rounded-lg border border-dashed border-gray-700 bg-gray-900/40 px-6">
+          <div className="flex flex-1 min-h-full w-full items-center justify-center rounded-lg border border-dashed border-border-default bg-surface-primary/40 px-6">
             <AsciiRobot />
           </div>
         )}

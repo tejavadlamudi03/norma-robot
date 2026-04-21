@@ -69,7 +69,7 @@ const TimelineTrackWithOverlay = memo(function TimelineTrackWithOverlay({
 
       {selectionRange && (
         <div
-          className="absolute top-0 bottom-0 bg-green-500/20 border-x-2 border-green-500 pointer-events-none"
+          className="absolute top-0 bottom-0 bg-timeline-selection/20 border-x-2 border-timeline-selection pointer-events-none"
           style={{
             left: `${frameToPercent(
               Math.min(selectionRange.start, selectionRange.end),
@@ -84,10 +84,10 @@ const TimelineTrackWithOverlay = memo(function TimelineTrackWithOverlay({
 
       {currentFrame >= minFrame && currentFrame <= maxFrame && (
         <div
-          className="absolute top-0 bottom-0 w-0.5 bg-green-500 pointer-events-none"
+          className="absolute top-0 bottom-0 w-0.5 bg-timeline-cursor pointer-events-none"
           style={{ left: `${frameToPercent(currentFrame)}%` }}
         >
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-timeline-cursor border-2 border-text-primary" />
         </div>
       )}
 
@@ -103,12 +103,12 @@ const TimelineTrackWithOverlay = memo(function TimelineTrackWithOverlay({
         return (
           <div
             key={`startup-${s.startupId || s.appStartId}-${s.frame}`}
-            className="absolute top-0 bottom-0 w-0.5 bg-orange-500 pointer-events-none z-20"
+            className="absolute top-0 bottom-0 w-0.5 bg-accent-warning-deep pointer-events-none z-20"
             style={{ left: `${percent}%` }}
           >
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-orange-500" />
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-accent-warning-deep" />
             <div
-              className={`absolute -top-5 ${labelAlign} text-[10px] leading-none text-orange-300 font-mono whitespace-nowrap pointer-events-none`}
+              className={`absolute -top-5 ${labelAlign} text-[10px] leading-none text-accent-warning font-mono whitespace-nowrap pointer-events-none`}
               title={`Startup #${s.startupId} @ ${s.frame} • app_start_id ${s.appStartId} • ${s.version} (${s.gitHash})`}
             >
               #{s.startupId}
@@ -123,7 +123,7 @@ const TimelineTrackWithOverlay = memo(function TimelineTrackWithOverlay({
         return (
           <div
             key={`tag-${idx}-${t.frame}-${t.tag}`}
-            className="absolute top-0 bottom-0 w-0.5 bg-cyan-400 z-20 cursor-pointer"
+            className="absolute top-0 bottom-0 w-0.5 bg-accent-data z-20 cursor-pointer"
             style={{ left: `${percent}%` }}
             title={`@ ${t.frame}: ${t.tag}`}
             onMouseDown={(e) => {
@@ -131,7 +131,7 @@ const TimelineTrackWithOverlay = memo(function TimelineTrackWithOverlay({
               if (e.button === 0) onTagClick(t.frame);
             }}
           >
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400" />
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-accent-data" />
           </div>
         );
       })}
@@ -323,7 +323,7 @@ const Timeline: React.FC<TimelineProps> = ({
         {isZoomed && (
           <button
             onClick={resetZoom}
-            className="text-white bg-blue-500 hover:bg-blue-700 rounded px-2 py-1 text-xs"
+            className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded border border-border-subtle transition-transform cursor-pointer"
           >
             Reset Zoom
           </button>
@@ -331,7 +331,7 @@ const Timeline: React.FC<TimelineProps> = ({
         {lastStartupFrame !== null && (
           <button
             onClick={handleZoomFromLastStartup}
-            className="text-white bg-orange-600 hover:bg-orange-500 rounded px-2 py-1 text-xs"
+            className="px-2 py-1 text-xs rounded border border-accent-warning-deep bg-accent-warning-deep text-text-primary hover:bg-accent-warning transition-colors"
           >
             From last startup
           </button>

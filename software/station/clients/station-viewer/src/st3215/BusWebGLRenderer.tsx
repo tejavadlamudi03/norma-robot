@@ -58,7 +58,7 @@ const BusWebGLRendererComponent = forwardRef<BusWebGLRendererRef, BusWebGLRender
             <Link
               to="/st3215-bus-calibration"
               state={{ bus }}
-              className="pointer-events-auto px-6 py-3 rounded text-lg font-bold transition-colors bg-green-600 text-white hover:bg-green-500 ring-4 ring-green-500/50"
+              className="pointer-events-auto px-6 py-3 rounded text-lg font-bold transition-colors bg-accent-success-bg text-text-primary hover:bg-accent-success-deep ring-4 ring-accent-success-deep/50"
             >
               Calibrate
             </Link>
@@ -69,7 +69,7 @@ const BusWebGLRendererComponent = forwardRef<BusWebGLRendererRef, BusWebGLRender
             <Link
               to="/st3215-bus-calibration"
               state={{ bus }}
-              className="px-4 py-2 rounded text-base font-bold transition-colors bg-green-600 text-white hover:bg-green-500"
+              className="px-4 py-2 rounded text-base font-bold transition-colors bg-accent-success-bg text-text-primary hover:bg-accent-success-deep"
             >
               Calibrate
             </Link>

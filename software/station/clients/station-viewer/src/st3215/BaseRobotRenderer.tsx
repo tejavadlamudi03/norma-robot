@@ -1,6 +1,7 @@
 
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useTheme } from '@/hooks/useTheme';
 import { getMotorPosition } from './motor-parser';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
@@ -12,6 +13,7 @@ import {
   rpyToMatrix
 } from './utils';
 import { appendHash } from '@/utils/asset-hashes';
+import { getRendererThemeColors } from '@/utils/theme-colors';
 
 interface BaseRobotRendererProps {
   busSerialNumber: string | null | undefined;
@@ -30,6 +32,7 @@ export interface BaseRobotRendererRef {
 
 const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProps>((props, ref) => {
   const { busSerialNumber, bus, isLeader, urdfPath, jointNames, basePos = [0,0,0], baseRpy = [0,0,0], robotType } = props;
+  const { theme } = useTheme();
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<any>(null);
   const isInitializedRef = useRef(false);
@@ -57,6 +60,26 @@ const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProp
     sceneRef.current.robot = null;
     sceneRef.current.model = null;
     sceneRef.current.arm = null;
+  };
+
+  const createGridHelper = () => {
+    const colors = getRendererThemeColors(theme);
+    return new THREE.GridHelper(2, 20, colors.gridPrimary, colors.gridSecondary);
+  };
+
+  const applySceneTheme = () => {
+    if (!sceneRef.current) return;
+
+    const colors = getRendererThemeColors(theme);
+    sceneRef.current.scene.background = colors.sceneBackground;
+
+    if (sceneRef.current.gridHelper) {
+      sceneRef.current.scene.remove(sceneRef.current.gridHelper);
+      disposeObject3D(sceneRef.current.gridHelper);
+    }
+
+    sceneRef.current.gridHelper = createGridHelper();
+    sceneRef.current.scene.add(sceneRef.current.gridHelper);
   };
 
   const loadRobot = () => {
@@ -184,7 +207,6 @@ const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProp
     isInitializedRef.current = true;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x303030);
 
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -209,9 +231,6 @@ const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProp
     directionalLight.castShadow = true;
     scene.add(directionalLight);
 
-    const gridHelper = new THREE.GridHelper(2, 20);
-    scene.add(gridHelper);
-
     const axesHelper = new THREE.AxesHelper(1);
     scene.add(axesHelper);
 
@@ -232,11 +251,13 @@ const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProp
       arm: null,
       animationId: 0,
       isLoading: false,
+      gridHelper: null,
       jointSpheres: [],
       endEffectorSphere: null,
       baseTransform: null
     };
 
+    applySceneTheme();
     loadRobot();
 
     const animate = () => {
@@ -277,6 +298,12 @@ const BaseRobotRenderer = forwardRef<BaseRobotRendererRef, BaseRobotRendererProp
       }
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (!sceneRef.current || !isInitializedRef.current) return;
+    applySceneTheme();
+    sceneRef.current.renderer.render(sceneRef.current.scene, sceneRef.current.camera);
+  }, [theme]);
 
   useEffect(() => {
     if (!sceneRef.current || !isInitializedRef.current) return;

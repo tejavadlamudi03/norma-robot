@@ -1,80 +1,214 @@
 @import "tailwindcss";
 
+@theme {
+  --color-surface-base: #000000;
+  --color-surface-primary: #111827;
+  --color-surface-secondary: #1f2937;
+  --color-surface-tertiary: #374151;
+  --color-surface-elevated: #4b5563;
+  --color-surface-active: #6b7280;
+  --color-surface-overlay: rgba(0, 0, 0, 0.5);
+  --color-surface-overlay-light: rgba(0, 0, 0, 0.8);
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d1d5db;
+  --color-text-label: #9ca3af;
+  --color-text-muted: #6b7280;
+  --color-text-dim: #4b5563;
+
+  --color-border-default: #374151;
+  --color-border-subtle: #4b5563;
+
+  --color-accent-success: #4ade80;
+  --color-accent-success-deep: #22c55e;
+  --color-accent-success-bg: #16a34a;
+  --color-accent-warning: #facc15;
+  --color-accent-warning-deep: #eab308;
+  --color-accent-danger: #fb923c;
+  --color-accent-danger-deep: #f97316;
+  --color-accent-critical: #f87171;
+  --color-accent-critical-deep: #ef4444;
+  --color-accent-critical-bg: #dc2626;
+  --color-accent-data: #22d3ee;
+  --color-accent-info: #60a5fa;
+  --color-accent-info-deep: #3b82f6;
+  --color-accent-info-bg: #2563eb;
+  --color-accent-secondary: #c084fc;
+  --color-accent-secondary-deep: #a855f7;
+  --color-accent-secondary-bg: #9333ea;
+  --color-accent-pink: #f472b6;
+  --color-accent-orange: #fb923c;
+
+  --color-timeline-track: #2A3A68;
+  --color-timeline-tick-major: #facc15;
+  --color-timeline-tick-minor: #60a5fa;
+  --color-timeline-selection: #4ade80;
+  --color-timeline-cursor: #4ade80;
+
+  --color-scrollbar-track: #1f2937;
+  --color-scrollbar-thumb: #4b5563;
+  --color-scrollbar-thumb-hover: #6b7280;
+
+  --color-canvas-fill: #404040;
+  --color-canvas-blue: #3B82F6;
+  --color-canvas-red: #EF4444;
+  --color-canvas-white: #FFFFFF;
+  --color-renderer-background: #303030;
+  --color-renderer-grid-primary: #6b7280;
+  --color-renderer-grid-secondary: #4b5563;
+}
+
 :root {
-    color-scheme: dark;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-surface-base: #f8fafc;
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f1f5f9;
+  --color-surface-tertiary: #e2e8f0;
+  --color-surface-elevated: #cbd5e1;
+  --color-surface-active: #94a3b8;
+  --color-surface-overlay: rgba(0, 0, 0, 0.3);
+  --color-surface-overlay-light: rgba(0, 0, 0, 0.5);
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-label: #475569;
+  --color-text-muted: #64748b;
+  --color-text-dim: #94a3b8;
+
+  --color-border-default: #cbd5e1;
+  --color-border-subtle: #94a3b8;
+
+  --color-accent-success: #16a34a;
+  --color-accent-success-deep: #15803d;
+  --color-accent-success-bg: #22c55e;
+  --color-accent-warning: #ca8a04;
+  --color-accent-warning-deep: #a16207;
+  --color-accent-danger: #ea580c;
+  --color-accent-danger-deep: #c2410c;
+  --color-accent-critical: #dc2626;
+  --color-accent-critical-deep: #b91c1c;
+  --color-accent-critical-bg: #ef4444;
+  --color-accent-data: #0891b2;
+  --color-accent-info: #2563eb;
+  --color-accent-info-deep: #1d4ed8;
+  --color-accent-info-bg: #3b82f6;
+  --color-accent-secondary: #7c3aed;
+  --color-accent-secondary-deep: #6d28d9;
+  --color-accent-secondary-bg: #8b5cf6;
+  --color-accent-pink: #db2777;
+  --color-accent-orange: #ea580c;
+
+  --color-timeline-track: #bfdbfe;
+  --color-timeline-tick-major: #b45309;
+  --color-timeline-tick-minor: #1d4ed8;
+  --color-timeline-selection: #16a34a;
+  --color-timeline-cursor: #16a34a;
+
+  --color-scrollbar-track: #e2e8f0;
+  --color-scrollbar-thumb: #94a3b8;
+  --color-scrollbar-thumb-hover: #64748b;
+
+  --color-canvas-fill: #d1d5db;
+  --color-canvas-blue: #2563eb;
+  --color-canvas-red: #dc2626;
+  --color-canvas-white: #0f172a;
+  --color-renderer-background: #f1f5f9;
+  --color-renderer-grid-primary: #94a3b8;
+  --color-renderer-grid-secondary: #cbd5e1;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    overflow: auto;
+  margin: 0;
+  min-height: 100vh;
+  overflow: auto;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
 }
 
-/* Custom scrollbar */
+#root {
+  min-height: 100vh;
+}
+
+:root[data-theme="light"] .logo-invert {
+  filter: invert(1);
+}
+
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #1f2937;
+  background: var(--color-scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #4b5563;
-    border-radius: 4px;
+  background: var(--color-scrollbar-thumb);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
+  background: var(--color-scrollbar-thumb-hover);
 }
 
-/* Logo pulse animation */
 @keyframes logo-pulse {
-    0% {
-        opacity: 0.4;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes logo-pulse-hover {
-    0%, 100% {
-        opacity: 0.6;
-    }
-    50% {
-        opacity: 1;
-    }
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes rainbow-sweep {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .logo-first-load {
-    animation: logo-pulse 1.2s ease-in-out forwards;
+  animation: logo-pulse 1.2s ease-in-out forwards;
 }
 
 .group:hover .logo-first-load {
-    animation: logo-pulse-hover 1.5s ease-in-out infinite;
+  animation: logo-pulse-hover 1.5s ease-in-out infinite;
 }
 
 .empty-state-rainbow {
-    background: linear-gradient(90deg, #f87171, #fb923c, #facc15, #4ade80, #60a5fa, #a78bfa, #f472b6, #f87171);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rainbow-sweep 3s linear infinite;
+  background: linear-gradient(90deg, #f87171, #fb923c, #facc15, #4ade80, #60a5fa, #a78bfa, #f472b6, #f87171);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-sweep 3s linear infinite;
+}
+
+:root[data-theme="light"] .empty-state-rainbow {
+  background: linear-gradient(90deg, #dc2626, #ea580c, #ca8a04, #16a34a, #2563eb, #7c3aed, #db2777, #dc2626);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .blink-cursor {
-    animation: blink 1s step-end infinite;
+  animation: blink 1s step-end infinite;
 }

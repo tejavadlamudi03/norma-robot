@@ -52,7 +52,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
 
   return (
     <div 
-      className="bg-gray-800 rounded mb-2 overflow-hidden"
+      className="bg-surface-secondary rounded mb-2 overflow-hidden"
       data-queue-type={dataQueueType}
       data-queue-id={dataQueueId}
     >
@@ -60,28 +60,28 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
         onClick={canExpand ? () => setIsExpanded(!isExpanded) : undefined}
         className={`
           flex items-center justify-between p-2 group
-          ${canExpand ? 'cursor-pointer hover:bg-gray-700' : ''}
+          ${canExpand ? 'cursor-pointer hover:bg-surface-tertiary' : ''}
           transition-all duration-150
           ${canExpand && !isExpanded ? 'hover:pl-3' : ''}
         `}
       >
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <span className="text-xs font-mono text-blue-400">#{index + 1}</span>
+          <span className="text-xs font-mono text-accent-info">#{index + 1}</span>
           {canExpand && (
             <span className={`
               text-xs transition-all duration-200
-              ${isExpanded ? 'text-gray-400 rotate-90' : 'text-gray-500 group-hover:text-gray-300'}
+              ${isExpanded ? 'text-text-label rotate-90' : 'text-text-muted group-hover:text-text-secondary'}
             `}>
               ▶
             </span>
           )}
-          <span className="text-yellow-400 font-mono text-sm truncate">{displayQueueId}</span>
-          <span className="text-gray-400 text-xs">→</span>
-          <span className="text-green-400 font-mono text-xs">{formatBytes(element.entryId)}</span>
+          <span className="text-accent-warning font-mono text-sm truncate">{displayQueueId}</span>
+          <span className="text-text-label text-xs">→</span>
+          <span className="text-accent-success font-mono text-xs">{formatBytes(element.entryId)}</span>
           {element.type && (
             <>
-              <span className="text-gray-400 text-xs">|</span>
-              <span className="text-purple-400 text-xs font-mono">{element.type}</span>
+              <span className="text-text-label text-xs">|</span>
+              <span className="text-accent-secondary text-xs font-mono">{element.type}</span>
             </>
           )}
         </div>
@@ -89,7 +89,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
         <div className="flex items-center gap-2 flex-shrink-0">
           {element.data ? (
             <>
-              <span className="text-xs text-gray-300">
+              <span className="text-xs text-text-secondary">
                 {element.data instanceof Uint8Array
                   ? `${element.data.length.toLocaleString()}b`
                   : 'Parsed'}
@@ -99,8 +99,8 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
                 className={`
                   text-xs px-1.5 py-0.5 rounded transition-all duration-150
                   ${isExpanded
-                    ? 'bg-gray-600 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-surface-elevated text-text-primary'
+                    : 'bg-surface-tertiary text-text-secondary hover:bg-surface-elevated'
                   }
                 `}
               >
@@ -108,7 +108,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
               </button>
             </>
           ) : (
-            <span className="text-xs text-red-400">
+            <span className="text-xs text-accent-critical">
               {element.error || 'No data'}
             </span>
           )}
@@ -118,7 +118,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
       {!isExpanded && (
         <div className="px-2 pb-2 space-y-1">
           {element.data && element.data instanceof Uint8Array && !usbVideoData && !normvlaData && (
-            <div className="bg-gray-900 p-1.5 rounded font-mono text-xs text-green-400 overflow-x-auto">
+            <div className="bg-surface-primary p-1.5 rounded font-mono text-xs text-accent-success overflow-x-auto">
               {formatBytes(element.data, 32)}
               {element.data.length > 32 && '...'}
             </div>
@@ -127,7 +127,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
           {usbVideoData && (
             <div className="space-y-1">
               {usbVideoData.frames && usbVideoData.frames.stamps && usbVideoData.frames.stamps.length > 0 && (
-                <div className="text-xs text-cyan-400">
+                <div className="text-xs text-accent-data">
                   Frames: {usbVideoData.frames.stamps.length}
                 </div>
               )}
@@ -137,7 +137,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
           {mirroringData && (
             <div className="space-y-1">
               {mirroringData.state?.mirroring && mirroringData.state.mirroring.length > 0 && (
-                <div className="text-xs text-purple-400">
+                <div className="text-xs text-accent-secondary">
                   Mirroring: {mirroringData.state.mirroring.length} configs
                 </div>
               )}
@@ -147,17 +147,17 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
           {sysinfoData && (
             <div className="flex items-center gap-3 text-xs">
               {sysinfoData.data?.cpu && sysinfoData.data.cpu.length > 0 && (
-                <span className="text-cyan-400">
+                <span className="text-accent-data">
                   CPU: {(sysinfoData.data.cpu.reduce((sum, cpu) => sum + (cpu.usage || 0), 0) / sysinfoData.data.cpu.length).toFixed(2)}%
                 </span>
               )}
               {sysinfoData.data?.memory && (
-                <span className="text-green-400">
+                <span className="text-accent-success">
                   Mem: {(Number(sysinfoData.data.memory.usedBytes || 0) / (1024 * 1024 * 1024)).toFixed(2)}/{(Number(sysinfoData.data.memory.totalBytes || 0) / (1024 * 1024 * 1024)).toFixed(2)}GB
                 </span>
               )}
               {sysinfoData.data?.hostname && (
-                <span className="text-gray-400">
+                <span className="text-text-label">
                   {sysinfoData.data.hostname}
                 </span>
               )}
@@ -167,12 +167,12 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
           {normvlaData && (
             <div className="flex items-center gap-3 text-xs">
               {normvlaData.joints && normvlaData.joints.length > 0 && (
-                <span className="text-orange-400">
+                <span className="text-accent-danger">
                   Joints: {normvlaData.joints.length}
                 </span>
               )}
               {normvlaData.images && normvlaData.images.length > 0 && (
-                <span className="text-cyan-400">
+                <span className="text-accent-data">
                   Images: {normvlaData.images.length}
                 </span>
               )}
@@ -182,22 +182,22 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
           {st3215TxData && (
             <div className="flex items-center gap-3 text-xs">
               {st3215TxData.targetBusSerial !== undefined && (
-                <span className="text-orange-400">
+                <span className="text-accent-danger">
                   Bus: {st3215TxData.targetBusSerial}
                 </span>
               )}
               {st3215TxData.write && (
-                <span className="text-cyan-400">
+                <span className="text-accent-data">
                   Write
                 </span>
               )}
               {st3215TxData.regWrite && (
-                <span className="text-purple-400">
+                <span className="text-accent-secondary">
                   RegWrite
                 </span>
               )}
               {st3215TxData.action && (
-                <span className="text-green-400">
+                <span className="text-accent-success">
                   Action
                 </span>
               )}
@@ -214,7 +214,7 @@ function HistoryElement({ element, index, dataQueueType, dataQueueId }: HistoryE
 
       {!element.data && (
         <div className="px-2 pb-2 text-center">
-          <div className="text-red-400 text-xs">
+          <div className="text-accent-critical text-xs">
             {element.error || 'Entry not found'}
           </div>
         </div>

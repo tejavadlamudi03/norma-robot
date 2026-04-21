@@ -25,16 +25,16 @@ const MotorSummaryTable = memo(function MotorSummaryTable({ motors }: MotorSumma
   }, [motors]);
 
   if (sortedMotors.length === 0) {
-    return <div className="text-xs text-gray-500">No motors reported.</div>;
+    return <div className="text-xs text-text-muted">No motors reported.</div>;
   }
 
 
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full text-xs text-gray-300">
+      <table className="min-w-full text-xs text-text-secondary">
         <thead>
-          <tr className="text-gray-400 border-b-2 border-gray-700">
+          <tr className="text-text-label border-b-2 border-border-default">
             <th className="text-center font-semibold py-1 pr-3 whitespace-nowrap w-auto">Motor</th>
             <th className="text-center font-semibold py-1 pr-3">Position</th>
             <th className="text-center font-semibold py-1 pr-3">Min</th>
@@ -58,33 +58,33 @@ const MotorSummaryTable = memo(function MotorSummaryTable({ motors }: MotorSumma
             const key = motor.id ?? idx;
 
             return (
-              <tr key={key} className={`border-t border-gray-800 ${idx % 2 === 1 ? 'bg-gray-900/30' : ''}`}>
-                <td className="py-1 pr-3 text-center text-cyan-400 font-mono whitespace-nowrap">{motor.id ?? '--'}</td>
-                <td className="py-1 pr-3 text-center text-purple-400">
+              <tr key={key} className={`border-t border-border-default ${idx % 2 === 1 ? 'bg-surface-primary/30' : ''}`}>
+                <td className="py-1 pr-3 text-center text-accent-data font-mono whitespace-nowrap">{motor.id ?? '--'}</td>
+                <td className="py-1 pr-3 text-center text-accent-secondary">
                   {position === null ? '--' : position}
                 </td>
-                <td className="py-1 pr-3 text-center text-pink-400">
+                <td className="py-1 pr-3 text-center text-accent-pink">
                   {rangeMin === null || rangeMin === undefined ? '--' : rangeMin}
                 </td>
-                <td className="py-1 pr-3 text-center text-pink-400">
+                <td className="py-1 pr-3 text-center text-accent-pink">
                   {rangeMax === null || rangeMax === undefined ? '--' : rangeMax}
                 </td>
-                <td className="py-1 pr-3 text-center text-green-400">
+                <td className="py-1 pr-3 text-center text-accent-success">
                   {current === null ? '--' : `${current} mA`}
                 </td>
-                <td className="py-1 pr-3 text-center text-blue-400">
+                <td className="py-1 pr-3 text-center text-accent-info">
                   {velocity === null ? '--' : velocity}
                 </td>
-                <td className="py-1 pr-3 text-center text-orange-400">
+                <td className="py-1 pr-3 text-center text-accent-danger">
                   {temperature === null ? '--' : `${temperature}C`}
                 </td>
                 <td className="py-1 text-center">
                   {driveEnabled === null ? (
-                    <span className="text-gray-500">--</span>
+                    <span className="text-text-muted">--</span>
                   ) : driveEnabled ? (
-                    <span className="text-green-400">On</span>
+                    <span className="text-accent-success">On</span>
                   ) : (
-                    <span className="text-gray-500">Off</span>
+                    <span className="text-text-muted">Off</span>
                   )}
                 </td>
               </tr>
@@ -105,16 +105,16 @@ const St3215Expanded = memo(function St3215Expanded({ data }: St3215ExpandedProp
   return (
     <div className="space-y-3">
       <div>
-        <div className="text-xs text-gray-400 mb-1">ST3215 Inference State:</div>
-        <div className="bg-gray-900 p-2 rounded text-xs space-y-1">
-          <div className="text-orange-400">Type: ST3215 Inference State</div>
-          <div className="text-cyan-400">Buses: {busCount}</div>
-          <div className="text-green-400">Total Motors: {totalMotors}</div>
+        <div className="text-xs text-text-label mb-1">ST3215 Inference State:</div>
+        <div className="bg-surface-primary p-2 rounded text-xs space-y-1">
+          <div className="text-accent-danger">Type: ST3215 Inference State</div>
+          <div className="text-accent-data">Buses: {busCount}</div>
+          <div className="text-accent-success">Total Motors: {totalMotors}</div>
         </div>
       </div>
 
       {busCount === 0 && (
-        <div className="bg-gray-900 p-2 rounded text-xs text-gray-400">
+        <div className="bg-surface-primary p-2 rounded text-xs text-text-label">
           No bus data available.
         </div>
       )}
@@ -125,13 +125,13 @@ const St3215Expanded = memo(function St3215Expanded({ data }: St3215ExpandedProp
           const motorCount = bus.motors?.length ?? 0;
 
           return (
-            <div key={bus.bus?.serialNumber ?? busIndex} className="bg-gray-900/60 border border-gray-800 rounded p-2 space-y-2" data-bus-container={bus.bus?.serialNumber ?? busIndex}>
+            <div key={bus.bus?.serialNumber ?? busIndex} className="bg-surface-primary/60 border border-border-default rounded p-2 space-y-2" data-bus-container={bus.bus?.serialNumber ?? busIndex}>
               <div className="flex items-center gap-3 text-xs">
-                <span className="text-cyan-400 font-mono">{busLabel}</span>
-                <span className="text-gray-400">Motors: {motorCount}</span>
+                <span className="text-accent-data font-mono">{busLabel}</span>
+                <span className="text-text-label">Motors: {motorCount}</span>
               </div>
               <div className="flex flex-col lg:flex-row gap-3 max-w-4xl">
-                <div className="bg-gray-950 rounded w-56 h-56 flex-shrink-0 overflow-hidden">
+                <div className="bg-surface-base rounded w-56 h-56 flex-shrink-0 overflow-hidden">
                   {canRenderWebGL ? (
                     <BusWebGLRenderer
                       busSerialNumber={bus.bus?.serialNumber}
@@ -139,7 +139,7 @@ const St3215Expanded = memo(function St3215Expanded({ data }: St3215ExpandedProp
                       busIndex={busIndex}
                     />
                   ) : (
-                    <div className="text-xs text-gray-500 flex items-center justify-center h-full">
+                    <div className="text-xs text-text-muted flex items-center justify-center h-full">
                       WebGL preview unavailable
                     </div>
                   )}

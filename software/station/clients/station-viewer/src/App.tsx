@@ -10,7 +10,7 @@ const St3215BusCalibrationPage = lazy(() => import('./pages/St3215BusCalibration
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-cyan-400 font-mono">Loading...</div>}>
+      <Suspense fallback={<div className="min-h-screen bg-surface-base flex items-center justify-center text-accent-data font-mono">Loading...</div>}>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />

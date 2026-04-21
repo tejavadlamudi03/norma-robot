@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { st3215 } from '../api/proto';
 import { getMotorPosition } from './motor-parser';
+import { useTheme } from '@/hooks/useTheme';
+import { getCanvasThemeColors } from '@/utils/theme-colors';
 
 interface BusStatusCanvasProps {
   bus: st3215.InferenceState.IBusState;
@@ -9,6 +11,7 @@ interface BusStatusCanvasProps {
 
 const BusStatusCanvas: React.FC<BusStatusCanvasProps> = ({ bus, size = 64 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   // Calculate percentage from motor position and range
   const calculatePercentage = (position: number, min: number, max: number): number => {
@@ -113,8 +116,17 @@ const BusStatusCanvas: React.FC<BusStatusCanvasProps> = ({ bus, size = 64 }) => 
     canvas.width = size;
     canvas.height = size;
 
-    // Fill canvas with dark gray color
-    ctx.fillStyle = '#404040'; // Dark gray color
+    const { canvasFill, canvasBlue, canvasRed, canvasWhite } = getCanvasThemeColors(theme);
+
+    const parseHex = (hex: string) => {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return m ? { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) } : { r: 0, g: 0, b: 0 };
+    };
+    const blueRgb = parseHex(canvasBlue);
+    const redRgb = parseHex(canvasRed);
+    const whiteRgb = parseHex(canvasWhite);
+
+    ctx.fillStyle = canvasFill;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Check if we have motor data
@@ -128,20 +140,18 @@ const BusStatusCanvas: React.FC<BusStatusCanvasProps> = ({ bus, size = 64 }) => 
     // 55-100%: White to Red transition
     let lineColor: string;
     if (motor1Percentage < 45) {
-      // Interpolate between blue (#3B82F6) and white
       const t = motor1Percentage / 45;
-      const r = Math.round(59 + (255 - 59) * t);
-      const g = Math.round(130 + (255 - 130) * t);
-      const b = Math.round(246 + (255 - 246) * t);
+      const r = Math.round(blueRgb.r + (whiteRgb.r - blueRgb.r) * t);
+      const g = Math.round(blueRgb.g + (whiteRgb.g - blueRgb.g) * t);
+      const b = Math.round(blueRgb.b + (whiteRgb.b - blueRgb.b) * t);
       lineColor = `rgb(${r}, ${g}, ${b})`;
     } else if (motor1Percentage <= 55) {
-      lineColor = '#FFFFFF'; // White
+      lineColor = canvasWhite;
     } else {
-      // Interpolate between white and red (#EF4444)
       const t = (motor1Percentage - 55) / 45;
-      const r = 255;
-      const g = Math.round(255 - (255 - 68) * t);
-      const b = Math.round(255 - (255 - 68) * t);
+      const r = whiteRgb.r;
+      const g = Math.round(whiteRgb.g - (whiteRgb.g - redRgb.g) * t);
+      const b = Math.round(whiteRgb.b - (whiteRgb.b - redRgb.b) * t);
       lineColor = `rgb(${r}, ${g}, ${b})`;
     }
 
@@ -293,7 +303,7 @@ const BusStatusCanvas: React.FC<BusStatusCanvasProps> = ({ bus, size = 64 }) => 
       ctx.fill();
     }
 
-  }, [motorData, size]);
+  }, [motorData, size, theme]);
 
   return (
     <div 

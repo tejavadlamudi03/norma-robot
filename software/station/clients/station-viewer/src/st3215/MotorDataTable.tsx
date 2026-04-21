@@ -4,6 +4,7 @@ import { getMotorPosition, getMotorCurrent, getMotorTemperature } from './motor-
 import { serverToLocal } from '../api/timestamp-utils';
 import Long from 'long';
 import { commandManager } from '../api/commands';
+import { getMotorStatusColor, getLatencyTextColor, getCurrentColor, getMotorStatusTextColor, getGradientClass, getTemperatureColor } from '@/utils/color-utils';
 
 interface LatencyReading {
   timestamp: number;
@@ -83,53 +84,10 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
     return ((position - min) / (max - min)) * 100;
   };
 
-  const getStatusColor = (latency: number, hasError: boolean) => {
-    if (hasError) return "text-red-500";
-    if (latency < 100) return "text-green-500";
-    if (latency < 500) return "text-yellow-500";
-    if (latency < 1000) return "text-orange-500";
-    return "text-red-500";
-  };
-
-  const getLatencyColor = (latency: number) => {
-    if (latency < 100) return "text-green-400";
-    if (latency < 500) return "text-yellow-400";
-    if (latency < 1000) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getCurrentColor = (current: number) => {
-    if (current === 0) return "text-gray-500";
-    if (current < 100) return "text-green-400";
-    if (current < 200) return "text-yellow-400";
-    if (current < 300) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getTemperatureColor = (temp: number) => {
-    if (temp === 0) return "text-gray-500";
-    if (temp < 40) return "text-green-400";
-    if (temp < 50) return "text-yellow-400";
-    if (temp < 60) return "text-orange-400";
-    return "text-red-400";
-  };
-
   const getStatusText = (latency: number, hasError: boolean) => {
     if (hasError) return "ERROR";
     if (latency > 500) return "STALE";
     return "OK";
-  };
-
-  const getStatusTextColor = (latency: number, hasError: boolean) => {
-    if (hasError) return "text-red-400";
-    if (latency > 500) return "text-yellow-400";
-    return "text-green-400";
-  };
-
-  const getGradientClass = (percentage: number) => {
-    if (percentage < 33) return "bg-gradient-to-r from-blue-600 to-blue-400";
-    if (percentage < 66) return "bg-gradient-to-r from-green-600 to-green-400";
-    return "bg-gradient-to-r from-yellow-600 to-yellow-400";
   };
 
   const handleMouseDown = (motor: st3215.InferenceState.IMotorState, event: React.MouseEvent<HTMLDivElement>) => {
@@ -401,10 +359,10 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
   }, [motorControlStates, bus.motors]);
 
   return (
-    <div className="absolute bottom-2 left-2 bg-gray-950/80 backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700/50 max-w-[calc(100%-1rem)]">
+    <div className="absolute bottom-2 left-2 bg-surface-base/80 backdrop-blur-sm rounded-lg overflow-hidden border border-border-default/50 max-w-[calc(100%-1rem)]">
       <div className="overflow-x-auto">
-        <table className="text-xs text-gray-400 min-w-full">
-        <thead className="bg-gray-800/80 text-gray-400 font-bold sticky top-0">
+        <table className="text-xs text-text-label min-w-full">
+        <thead className="bg-surface-secondary/80 text-text-label font-bold sticky top-0">
           <tr>
             <th className="px-2 py-1 text-left">ID</th>
             <th className="px-2 py-1 text-right">POS</th>
@@ -430,20 +388,20 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
             const hasError = !!motor.error;
 
             return (
-              <tr key={motorIndex} className={`hover:bg-gray-900/50 transition-colors border-b border-gray-800/50 ${hasError ? 'bg-red-900/20' : ''}`}>
+              <tr key={motorIndex} className={`hover:bg-surface-primary/50 transition-colors border-b border-border-default/50 ${hasError ? 'bg-accent-critical/10' : ''}`}>
                 {/* Motor ID */}
-                <td className={`px-2 py-1.5 font-bold ${getStatusColor(latency, hasError)}`}>
+                <td className={`px-2 py-1.5 font-bold ${getMotorStatusColor(latency, hasError)}`}>
                   M{motor.id?.toString()}
                 </td>
                 
                 {/* Position */}
-                <td className="px-2 py-1.5 text-green-400 tabular-nums text-right">{position}</td>
+                <td className="px-2 py-1.5 text-accent-success tabular-nums text-right">{position}</td>
                 
                 {/* Current */}
                 <td className={`px-2 py-1.5 ${getCurrentColor(current)} tabular-nums text-right`}>{current}</td>
                 
                 {/* Range Min */}
-                <td className="px-2 py-1.5 text-gray-500 tabular-nums text-right">
+                <td className="px-2 py-1.5 text-text-muted tabular-nums text-right">
                   {motor.rangeMin?.toString().padStart(4, '0') || '0000'}
                 </td>
                 
@@ -453,7 +411,7 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                     {/* Decrement button */}
                     {isWebControlled && (
                       <button
-                        className="w-6 h-6 bg-gray-700 hover:bg-gray-600 active:bg-gray-500 rounded text-white text-xs font-bold transition-colors"
+                        className="w-6 h-6 bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active rounded text-text-primary text-xs font-bold transition-colors"
                         onMouseDown={() => handleButtonMouseDown(motor, false)}
                         onMouseUp={() => handleButtonMouseUp(motor, false)}
                         onMouseLeave={() => handleButtonMouseUp(motor, false)}
@@ -463,9 +421,9 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                       </button>
                     )}
                     <div 
-                      className={`bg-gray-800 rounded-full overflow-hidden relative flex-1 ${
-                        isWebControlled ? 'cursor-move hover:bg-gray-700 h-5' : 'h-3'
-                      } ${controlState?.isDragging ? 'ring-2 ring-blue-500' : ''}`}
+                      className={`bg-surface-secondary rounded-full overflow-hidden relative flex-1 ${
+                        isWebControlled ? 'cursor-move hover:bg-surface-tertiary h-5' : 'h-3'
+                      } ${controlState?.isDragging ? 'ring-2 ring-accent-info-deep' : ''}`}
                       data-motor-control={motor.id}
                       onMouseDown={(e) => handleMouseDown(motor, e)}
                       onMouseMove={(e) => handleMouseMove(motor, e)}
@@ -484,7 +442,7 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                       {/* Target position preview (when dragging) */}
                       {controlState?.isDragging && controlState.targetPosition !== null && (
                         <div 
-                          className="absolute top-0 h-full bg-blue-500 opacity-70"
+                          className="absolute top-0 h-full bg-accent-info-deep opacity-70"
                           style={{ 
                             width: `${calculatePercentage(controlState.targetPosition, motor.rangeMin || 0, motor.rangeMax || 0)}%`,
                             pointerEvents: 'none'
@@ -494,14 +452,14 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                       
                       {/* Current position indicator */}
                       <div 
-                        className="absolute top-0 h-full w-0.5 bg-white shadow-sm"
+                        className="absolute top-0 h-full w-0.5 bg-text-primary shadow-sm"
                         style={{ left: `${percentage}%`, pointerEvents: 'none' }}
                       />
                       
                       {/* Target position indicator (when dragging) */}
                       {controlState?.isDragging && controlState.targetPosition !== null && (
                         <div 
-                          className="absolute top-0 h-full w-1 bg-blue-400 shadow-lg"
+                          className="absolute top-0 h-full w-1 bg-accent-info shadow-lg"
                           style={{ 
                             left: `${calculatePercentage(controlState.targetPosition, motor.rangeMin || 0, motor.rangeMax || 0)}%`,
                             pointerEvents: 'none'
@@ -512,14 +470,14 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                     
                     {/* Hover tooltip */}
                     {isWebControlled && hoveredMotor === motor.id && !controlState?.isDragging && (
-                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-surface-primary text-text-primary text-xs px-2 py-1 rounded whitespace-nowrap z-10">
                         Drag to move
                       </div>
                     )}
                     
                     {/* Dragging percentage display */}
                     {controlState?.isDragging && controlState.targetPosition !== null && (
-                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold z-10">
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-accent-info-bg text-text-primary text-xs px-2 py-1 rounded font-bold z-10">
                         {calculatePercentage(controlState.targetPosition, motor.rangeMin || 0, motor.rangeMax || 0).toFixed(1)}%
                       </div>
                     )}
@@ -527,7 +485,7 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                       {/* Increment button */}
                       {isWebControlled && (
                           <button
-                              className="w-6 h-6 bg-gray-700 hover:bg-gray-600 active:bg-gray-500 rounded text-white text-xs font-bold transition-colors"
+                              className="w-6 h-6 bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active rounded text-text-primary text-xs font-bold transition-colors"
                               onMouseDown={() => handleButtonMouseDown(motor, true)}
                               onMouseUp={() => handleButtonMouseUp(motor, true)}
                               onMouseLeave={() => handleButtonMouseUp(motor, true)}
@@ -540,12 +498,12 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                 </td>
                 
                 {/* Range Max */}
-                <td className="px-2 py-1.5 text-gray-500 tabular-nums">
+                <td className="px-2 py-1.5 text-text-muted tabular-nums">
                   {motor.rangeMax?.toString().padStart(4, '0') || '4095'}
                 </td>
                 
                 {/* Percentage */}
-                <td className="px-2 py-1.5 text-blue-400 tabular-nums text-right">{percentage.toFixed(1)}%</td>
+                <td className="px-2 py-1.5 text-accent-info tabular-nums text-right">{percentage.toFixed(1)}%</td>
                 
                 {/* Temperature */}
                 <td className={`px-2 py-1.5 ${getTemperatureColor(temperature)} tabular-nums text-right`}>
@@ -553,7 +511,7 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                 </td>
 
                 {/* Latency Average */}
-                <td className={`px-2 py-1.5 ${getLatencyColor(latency)} tabular-nums text-right`}>
+                <td className={`px-2 py-1.5 ${getLatencyTextColor(latency)} tabular-nums text-right`}>
                   {latencyAvg.avg < 1000 
                     ? `${latencyAvg.avg.toFixed(0)}ms` 
                     : `${(latencyAvg.avg/1000).toFixed(1)}s`
@@ -561,7 +519,7 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                 </td>
                 
                 {/* Latency Max */}
-                <td className={`px-2 py-1.5 ${getLatencyColor(latencyAvg.max)} tabular-nums text-right`}>
+                <td className={`px-2 py-1.5 ${getLatencyTextColor(latencyAvg.max)} tabular-nums text-right`}>
                   {latencyAvg.max < 1000 
                     ? `${latencyAvg.max.toFixed(0)}ms` 
                     : `${(latencyAvg.max/1000).toFixed(1)}s`
@@ -569,9 +527,9 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
                 </td>
                 
                 {/* Status and Error */}
-                <td className={`px-2 py-1.5 font-bold ${getStatusTextColor(latency, hasError)}`} colSpan={2}>
+                <td className={`px-2 py-1.5 font-bold ${getMotorStatusTextColor(latency, hasError)}`} colSpan={2}>
                   {motor.error ? (
-                    <span className="text-red-400 truncate" title={motor.error.description || 'Unknown error'}>
+                    <span className="text-accent-critical truncate" title={motor.error.description || 'Unknown error'}>
                       {motor.error.kind}: {motor.error.description || 'Unknown error'}
                     </span>
                   ) : (
@@ -585,10 +543,10 @@ const MotorDataTable: React.FC<MotorDataTableProps> = ({ bus, busIndex, isWebCon
       </table>
       </div>
       {isWebControlled && (
-        <div className="px-2 py-1 bg-green-900/30 text-green-400 text-xs border-t border-gray-700/50">
+        <div className="px-2 py-1 bg-accent-success/10 text-accent-success text-xs border-t border-border-default/50">
           <div className="flex items-center justify-between">
             <span>🎮 Web Control Active</span>
-            <span className="text-gray-500">
+            <span className="text-text-muted">
               Drag to move • Hold +/- for continuous
             </span>
           </div>

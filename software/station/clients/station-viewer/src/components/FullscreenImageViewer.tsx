@@ -128,7 +128,7 @@ const FullscreenImageViewerComponent = function FullscreenImageViewer({ src, alt
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-surface-overlay-light backdrop-blur-sm flex items-center justify-center"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <img
@@ -147,11 +147,11 @@ const FullscreenImageViewerComponent = function FullscreenImageViewer({ src, alt
         draggable={false}
       />
 
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-gray-900 border border-gray-700 px-4 py-3 rounded md:px-3 md:py-2">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-surface-primary border border-border-default px-4 py-3 rounded md:px-3 md:py-2">
         <button
           type="button"
           onClick={handleZoomOut}
-          className="px-3 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
+          className="px-3 py-2 text-sm bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
           title="Zoom out"
         >
           −
@@ -159,23 +159,23 @@ const FullscreenImageViewerComponent = function FullscreenImageViewer({ src, alt
         <button
           type="button"
           onClick={handleReset}
-          className="px-3 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer min-w-14 text-center md:px-2 md:py-1 md:text-xs md:min-w-10"
+          className="px-3 py-2 text-sm bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer min-w-14 text-center md:px-2 md:py-1 md:text-xs md:min-w-10"
         >
           {Math.round(scale * 100)}%
         </button>
         <button
           type="button"
           onClick={handleZoomIn}
-          className="px-3 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
+          className="px-3 py-2 text-sm bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
           title="Zoom in"
         >
           +
         </button>
-        <div className="w-px h-6 bg-gray-600 mx-1 md:h-4" />
+        <div className="w-px h-6 bg-surface-elevated mx-1 md:h-4" />
         <button
           type="button"
           onClick={onClose}
-          className="px-3 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
+          className="px-3 py-2 text-sm bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer md:px-2 md:py-1 md:text-xs"
           title="Close (Esc)"
         >
           ✕

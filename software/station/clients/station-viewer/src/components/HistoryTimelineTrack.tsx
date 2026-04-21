@@ -27,14 +27,14 @@ const HistoryTimelineTrack: React.FC<HistoryTimelineTrackProps> = ({
   };
 
   return (
-    <div ref={trackRef} className={`w-full ${height} bg-[#2A3A68] relative cursor-pointer rounded-md`}>
+    <div ref={trackRef} className={`w-full ${height} bg-timeline-track relative cursor-pointer rounded-md`}>
         {ticks.map((tick) => (
         <div
             key={tick.frame}
             className="absolute top-0 h-full pointer-events-none"
             style={{ left: `${frameToPercent(tick.frame)}%` }}
         >
-            <div className={`w-px pointer-events-none ${tick.isMajor ? 'bg-yellow-400 h-full' : 'bg-blue-400 h-full'}`}></div>
+            <div className={`w-px pointer-events-none ${tick.isMajor ? 'bg-timeline-tick-major h-full' : 'bg-timeline-tick-minor h-full'}`}></div>
         </div>
         ))}
     </div>

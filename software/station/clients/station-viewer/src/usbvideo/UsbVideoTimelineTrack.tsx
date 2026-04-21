@@ -123,9 +123,9 @@ const UsbVideoTimelineTrack: React.FC<UsbVideoTimelineTrackProps> = ({
   const disabledWidth = disabledBeforeFrame ? frameToPercent(disabledBeforeFrame) : 0;
 
   return (
-    <div ref={trackRef} className={`w-full ${height} bg-gray-700 relative cursor-pointer ${isFirst ? 'rounded-t' : ''} ${isLast ? 'rounded-b' : ''}`}>
+    <div ref={trackRef} className={`w-full ${height} bg-surface-tertiary relative cursor-pointer ${isFirst ? 'rounded-t' : ''} ${isLast ? 'rounded-b' : ''}`}>
       <div className="absolute top-0 h-full flex items-center justify-center pointer-events-none" style={{ left: `${disabledWidth}%`, right: '0' }}>
-        {isLoading && <div className="text-white">Loading frames...</div>}
+        {isLoading && <div className="text-text-primary">Loading frames...</div>}
       </div>
       <div className="absolute top-0 h-full flex overflow-hidden pointer-events-none" style={{ left: `${disabledWidth}%`, right: '0' }}>
           {imageSrcs.map((src, index) => (
@@ -134,7 +134,7 @@ const UsbVideoTimelineTrack: React.FC<UsbVideoTimelineTrackProps> = ({
       </div>
       {disabledWidth > 0 && (
         <div
-          className={`absolute top-0 left-0 h-full bg-gray-900/50 ${isFirst ? 'rounded-tl' : ''} ${isLast ? 'rounded-bl' : ''}`}
+          className={`absolute top-0 left-0 h-full bg-surface-primary/50 ${isFirst ? 'rounded-tl' : ''} ${isLast ? 'rounded-bl' : ''}`}
           style={{ width: `${disabledWidth}%` }}
         ></div>
       )}

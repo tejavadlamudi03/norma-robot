@@ -96,7 +96,7 @@ const GotoFrameInput = forwardRef<GotoFrameInputRef, GotoFrameInputProps>(
         onKeyDown={handleKeyDown}
         placeholder="Frame # or ±N"
         title={title}
-        className={`px-2 py-1 text-xs bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:outline-none font-mono text-center ${error ? 'border-red-500' : ''} ${className}`}
+        className={`px-2 py-1 text-xs bg-surface-tertiary text-text-primary rounded border border-border-subtle focus:border-accent-info-deep focus:outline-none font-mono text-center ${error ? 'border-accent-critical' : ''} ${className}`}
       />
     );
   }

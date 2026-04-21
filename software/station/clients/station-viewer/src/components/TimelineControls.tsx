@@ -27,21 +27,21 @@ const TimelineControlsComponent = forwardRef<TimelineControlsRef, TimelineContro
       <div className="flex items-center gap-2">
         <button
           onClick={() => actions.jumpToStart()}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title="Jump to start (Home)"
         >
           |◀
         </button>
         <button
           onClick={() => actions.prevFrame(largeFrameStep)}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title={`Previous ${largeFrameStep} frames (Shift+←)`}
         >
           ◀◀
         </button>
         <button
           onClick={() => actions.prevFrame(frameStep)}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title="Previous frame (←)"
         >
           ◀
@@ -56,21 +56,21 @@ const TimelineControlsComponent = forwardRef<TimelineControlsRef, TimelineContro
         />
         <button
           onClick={() => actions.nextFrame(frameStep)}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title="Next frame (→)"
         >
           ▶
         </button>
         <button
           onClick={() => actions.nextFrame(largeFrameStep)}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title={`Next ${largeFrameStep} frames (Shift+→)`}
         >
           ▶▶
         </button>
         <button
           onClick={() => actions.jumpToEnd()}
-          className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 active:bg-gray-500 active:scale-95 text-white rounded transition-transform cursor-pointer"
+          className="px-2 py-1 text-xs bg-surface-tertiary hover:bg-surface-elevated active:bg-surface-active active:scale-95 text-text-primary rounded transition-transform cursor-pointer"
           title="Jump to end (End)"
         >
           ▶|
