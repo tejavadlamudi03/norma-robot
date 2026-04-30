@@ -8,25 +8,14 @@
 
 To fully realize the potential of this approach, we had to build a lot from scratch, rethinking traditional solutions from a practical perspective. This includes not just software, but complete hardware systems like our **7+1 DoF robotic arm** with a **parallel jaw gripper** - tools designed to open up a whole new dimension of applications for home and research robotics without significant cost or investment.
 
-**Station is now available!**
+## What's inside
 
-Physical operations platform for robotics - real-time data collection, inference integration, and robot control. Zero-dependency single binary with web interface.
-
-👉 **[Get started with Station →](software/station/bin/station/)**
-
-**ElRobot is now fully open-source!**
-
-Meet **ElRobot**: a highly affordable, fully 3D-printed robotic arm designed for physical AI research and imitation learning. At just ~$220 per arm with ~14h of printing time, ElRobot brings professional-grade teleoperation capabilities to everyone.
-
-**What's included:**
-- 📁 Complete CAD files (STEP & STL)
-- 📖 Step-by-step assembly manuals
-- 🖨️ Ready-to-print Bambu Lab projects
-- 🤖 URDF files for simulation
-
-👉 **[Get started with ElRobot →](hardware/elrobot/)**
-
-Also available: **[Parallel Jaw Gripper](hardware/pgripper/)** - A modular gripper compatible with ElRobot and SO-101 arms.
+| Project | Path | Description |
+|---|---|---|
+| **ElRobot** | [`hardware/elrobot/`](hardware/elrobot/) | Fully 3D-printed 7+1 DoF robotic arm for imitation learning |
+| **Parallel Jaw Gripper** | [`hardware/pgripper/`](hardware/pgripper/) | Modular gripper for the SO-101 arm |
+| **Station** | [`software/station/bin/station/`](software/station/bin/station/) | Real-time robotics platform — data collection, inference, control. Single binary, web UI |
+| **SmolVLA fine-tune** | [`software/ai/smolvla_py/`](software/ai/smolvla_py/) | Train + deploy a [SmolVLA](https://huggingface.co/docs/lerobot/smolvla) policy on the SO-101 arm |
 
 **Website:** [normacore.dev](https://normacore.dev)
 
