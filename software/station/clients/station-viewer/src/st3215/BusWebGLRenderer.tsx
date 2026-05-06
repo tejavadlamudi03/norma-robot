@@ -49,8 +49,8 @@ const BusWebGLRendererComponent = forwardRef<BusWebGLRendererRef, BusWebGLRender
           </div>
         }
         {selectedVideoSource && (
-          <div className="absolute top-4 lg:top-auto lg:bottom-4 right-4 w-2/5 h-[200px] pointer-events-auto">
-            <CameraViewer inferenceState={selectedVideoSource} />
+          <div className="absolute top-4 right-4 h-[200px] w-2/5 max-w-[520px] overflow-hidden rounded-lg border border-border-default bg-black shadow-lg pointer-events-auto">
+            <CameraViewer inferenceState={selectedVideoSource} className="h-full w-full" />
           </div>
         )}
         {showCalibrateButton && !inCalibrationView && needsCalibration && (
