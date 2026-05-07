@@ -264,6 +264,17 @@ const BusCard: React.FC<BusCardProps> = ({
   const canShowCamera = activeVideoSources.length > 0;
   const controlSourceWidthClass = viewMode === "camera" ? "max-w-[140px]" : "max-w-[180px]";
   const cameraSelectWidthClass = viewMode === "camera" ? "max-w-[120px]" : "max-w-[180px]";
+  const primaryVideoSourceOptions = useMemo(
+    () =>
+      viewMode === "camera"
+        ? activeVideoSources.filter((entry) => getVideoSourceId(entry) !== secondaryVideoSourceId)
+        : activeVideoSources,
+    [activeVideoSources, secondaryVideoSourceId, viewMode],
+  );
+  const secondaryVideoSourceOptions = useMemo(
+    () => activeVideoSources.filter((entry) => getVideoSourceId(entry) !== primaryVideoSourceId),
+    [activeVideoSources, primaryVideoSourceId],
+  );
 
   return (
     <div className="min-w-0 border border-border-default rounded-lg bg-surface-primary/50">
@@ -330,9 +341,29 @@ const BusCard: React.FC<BusCardProps> = ({
             title="Main camera"
           >
             <option value="">None</option>
-            {activeVideoSources
-              .filter((entry) => getVideoSourceId(entry) !== secondaryVideoSourceId)
-              .map((entry) => {
+            {primaryVideoSourceOptions.map((entry) => {
+              const sourceId = getVideoSourceId(entry);
+              const label = getVideoSourceLabel(entry);
+              return (
+                <option
+                  key={`${entry.queueId}-${sourceId}`}
+                  value={sourceId}
+                  title={label}
+                >
+                  {label}
+                </option>
+              );
+            })}
+          </select>
+          {viewMode === "camera" && (
+            <select
+              value={secondaryVideoSourceId ?? ""}
+              onChange={(e) => handleSecondaryVideoSourceChange(e.target.value || null)}
+              className={`block min-w-0 ${cameraSelectWidthClass} basis-full pl-3 pr-10 py-1 text-base border-border-subtle bg-surface-secondary text-text-primary focus:outline-none focus:ring-accent-success-deep focus:border-accent-success-deep sm:text-sm rounded-md`}
+              title="Picture-in-picture camera"
+            >
+              <option value="">None</option>
+              {secondaryVideoSourceOptions.map((entry) => {
                 const sourceId = getVideoSourceId(entry);
                 const label = getVideoSourceLabel(entry);
                 return (
@@ -345,30 +376,6 @@ const BusCard: React.FC<BusCardProps> = ({
                   </option>
                 );
               })}
-          </select>
-          {viewMode === "camera" && (
-            <select
-              value={secondaryVideoSourceId ?? ""}
-              onChange={(e) => handleSecondaryVideoSourceChange(e.target.value || null)}
-              className={`block min-w-0 ${cameraSelectWidthClass} basis-full pl-3 pr-10 py-1 text-base border-border-subtle bg-surface-secondary text-text-primary focus:outline-none focus:ring-accent-success-deep focus:border-accent-success-deep sm:text-sm rounded-md`}
-              title="Picture-in-picture camera"
-            >
-              <option value="">None</option>
-              {activeVideoSources
-                .filter((entry) => getVideoSourceId(entry) !== primaryVideoSourceId)
-                .map((entry) => {
-                  const sourceId = getVideoSourceId(entry);
-                  const label = getVideoSourceLabel(entry);
-                  return (
-                    <option
-                      key={`${entry.queueId}-${sourceId}`}
-                      value={sourceId}
-                      title={label}
-                    >
-                      {label}
-                    </option>
-                  );
-                })}
             </select>
           )}
         </div>
