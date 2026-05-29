@@ -11,6 +11,10 @@ mac:
   icon: build/icon.icns
   entitlements: build/entitlements.mac.plist
   entitlementsInherit: build/entitlements.mac.inherit.plist
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  identity: "Aleksandr Batsuev (4GKC7NNZTP)"
+  notarize: true
   extendInfo:
     NSUSBDeviceUsageDescription: NormaCore Station needs USB access to communicate with robotic hardware.
     NSSerialPortUsageDescription: NormaCore Station needs serial port access to communicate with robotic hardware.
