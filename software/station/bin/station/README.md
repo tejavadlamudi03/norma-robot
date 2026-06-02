@@ -15,7 +15,7 @@ Download pre-built binaries from the [releases page](https://github.com/norma-co
 
 **macOS Desktop App:**
 ```bash
-# Install station-macos-arm64.dmg or extract ZIP and drag to Applications
+# Install station-macos-arm64.dmg and drag NormaCore Station to Applications
 # Station binary runs automatically in the background
 ```
 
