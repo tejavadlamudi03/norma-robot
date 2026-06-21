@@ -529,24 +529,6 @@ us.anthropic.claude-haiku-4-5-20251001-v1:0    ✅
 anthropic.claude-haiku-4-5-20251001-v1:0        ❌
 ```
 
-### Arm snaps to home too fast
-Already handled with 30-step smooth interpolation. If still jumpy:
-```python
-# In go_home(), increase steps= argument
-await go_home(client, frame, bus_serial, motor_ids, steps=60)
-```
-
-### Whisper too slow
-```bash
---whisper-model tiny    # fastest, good enough for clear speech
-```
-
-### iPhone can't reach server
-Use cloudflared tunnel — avoids all firewall / HTTPS issues:
-```bash
-./cloudflared tunnel --url http://localhost:8080
-```
-
 ---
 
 ## Hardware Info Reference
