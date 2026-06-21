@@ -1,0 +1,8 @@
+{
+  "gripper_joint": "j8",
+  "gripper_open": 0.78,
+  "gripper_closed": 0.22,
+  "rotation_joint": "j7",
+  "rotation_grasp": 0.45,
+  "lift": "after closing j8: retract j3 (elbow in) and pitch j4 UP, keep j2 moderate (do NOT raise shoulder while extended)"
+}

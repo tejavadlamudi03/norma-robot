@@ -1,0 +1,16 @@
+drivers:
+  st3215:
+    enabled: true
+    current-threshold: 200
+    deadband: 20
+  system-info: true
+  usb-video:
+    enabled: true
+    resize_target: 224
+inference:
+- queue-id: inference/normvla
+  shm: /dev/shm/normvla
+  shm-size-mb: 12
+  format: normvla
+  st3215-bus: "5B61034836"   # pin to FOLLOWER bus by serial. 'auto' needs exactly ONE torque-enabled bus; with leader+follower both connected it's ambiguous -> normvla no_bus freeze. Serial is stable across replug (ports renumber).
+  update-interval: 100ms

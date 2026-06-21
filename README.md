@@ -1,5 +1,7 @@
 # NormaCore
 
+> **🏆 Hackathon submission (Berlin AI × Robotics).** This fork adds **[`claude-supervisor/`](claude-supervisor/)** — an LLM (Claude) that drives the ElRobot arm for a real pick-and-place and supervises the SmolVLA policy, preempting it with direct joint commands when it fails. See **[claude-supervisor/README.md](claude-supervisor/README.md)** for the architecture.
+
 ### The Unified Toolkit for Physical System Development & Operations
 
 **NormaCore** is a unified toolkit designed to facilitate the development and deployment of physical systems. From complex robotics to distributed sensor networks and hobby projects, the system provides a solid foundation to manage them all. To achieve this goal, the platform combines a unified API, high-performance data pipelines, and visual tooling to help you build and manage your entire ecosystem as one.
@@ -17,6 +19,7 @@ To fully realize the potential of this approach, we had to build a lot from scra
 | **Station** | [`software/station/bin/station/`](software/station/bin/station/) | Real-time robotics platform — data collection, inference, control. Single binary, web UI |
 | **SmolVLA fine-tune** | [`software/ai/smolvla_py/`](software/ai/smolvla_py/) | Train + deploy a [SmolVLA](https://huggingface.co/docs/lerobot/smolvla) policy on the SO-101 arm |
 | **Gremlin** | [`shared/gremlin_go/`](shared/gremlin_go/) · [`shared/gremlin_py/`](shared/gremlin_py/) | High-performance Protobuf SDK for Go and Python — used across the station + drivers stack |
+| **🏆 Claude Supervisor** | [`claude-supervisor/`](claude-supervisor/) | **Hackathon:** an LLM (Claude) controlling the ElRobot arm — pick-and-place + supervising/preempting the SmolVLA policy |
 
 **Website:** [normacore.dev](https://normacore.dev)
 

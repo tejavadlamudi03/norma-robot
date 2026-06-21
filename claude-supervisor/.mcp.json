@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "robot-station": {
+      "type": "stdio",
+      "command": "/home/manas-reddy/Downloads/Normacore hackthon/.venv/bin/python",
+      "args": ["/home/manas-reddy/Downloads/Normacore hackthon/station_mcp.py"],
+      "env": {
+        "STATION_HOST": "localhost",
+        "ROBOT_BUS_SERIAL": "5B61034836",
+        "ROBOT_GRIPPER_JOINT": "j7",
+        "ROBOT_MAX_STEP": "0.25",
+        "ROBOT_IMG_MAX_W": "512",
+        "ROBOT_STATE_DIR": "/home/manas-reddy/Downloads/Normacore hackthon"
+      }
+    }
+  }
+}
